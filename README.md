@@ -1,13 +1,12 @@
 # Ladle
 
+<img src="images/LadleApp.png" width="512" alt="Ladle Logo">
 
-<img src="images/LadleApp.png" width="256" alt="Ladle Logo">
+**Ladle** is a dynamic bot that brews together top news, notable specified subreddit posts, and interesting topics without the clutter of visiting the website. 
 
-Ladle is a dynamic bot that brews together top news, notable specified subreddit posts, and interesting topics without the clutter of visiting the website. 
-
-- Pick Interesting Subreddits to follow
+- Pick interesting subreddits to follow
 - Search through top stories
-- A simple UI to navigate posts
+- Utilize a simple interface to navigate posts
 
 ## Run
 Project Structure
@@ -37,7 +36,7 @@ To configure up ```praw.ini``` file simply place in your actual:
 
 Change other configurations in default or add more bots as necessary.
 
-To run Ladle
+To execute Ladle
 ```
 python3 stew_bot.py
 ```
