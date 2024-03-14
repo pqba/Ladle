@@ -1,6 +1,7 @@
 # Ladle
 
-![Ladle App Icon](images/LadleApp.png "Ladle Logo")
+
+<img src="images/LadleApp.png" width="256" alt="Ladle Logo">
 
 Ladle is a dynamic bot that brews together top news, notable specified subreddit posts, and interesting topics without the clutter of visiting the website. 
 
