@@ -1,2 +1,3 @@
-# Ignore info.txt file (private info)
-info.txt
+# Ignore venv
+venv/
+myenv/
