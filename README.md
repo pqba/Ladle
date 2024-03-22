@@ -41,6 +41,12 @@ To execute Ladle
 python3 stew_bot.py
 ```
 
+To test Flask App 
+```
+flask --app app run
+```
+Open: **http://127.0.0.1:5000**
+
 ## Documentation
 
 Refer to Praw Documentation for more info [Praw](https://praw.readthedocs.io/en/stable/index.html)
