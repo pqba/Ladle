@@ -1,0 +1,16 @@
+{%extends 'base.html' %} 
+
+{% block title %}Ladle Home {% endblock %}
+
+{% block body %}
+<h1>Sub List</h1>
+<li>
+    <ul>A</ul>
+    <ul>B</ul>
+    <ul>C</ul>
+</li>
+<p>Reddit Content: {{content}}</p>
+{% for post in loadedPosts %}
+  {{ post }}
+{% endfor %}
+{% endblock %}
