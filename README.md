@@ -2,22 +2,30 @@
 
 <img src="images/LadleApp.png" width="512" alt="Ladle Logo">
 
-**Ladle** is a dynamic bot that brews together top news, notable specified subreddit posts, and interesting topics without the clutter of visiting the website. 
+**Ladle** is a dynamic bot that brews together top news, notable specified subreddit posts, and interesting topics without the clutter or doomscroll from visiting the website. 
 
 - Pick interesting subreddits to follow
 - Search through top stories
 - Utilize a simple interface to navigate posts
+- Open Reddit for more details if necessary
 
 ## Run
 Project Structure
 ```
 .
 ├── README.md
+├── app.py
 ├── images
 │   └── LadleApp.png
 ├── praw.ini
 ├── requirements.txt
-└── stew_bot.py
+├── static
+│   └── stylesheets
+│       └── style.css
+├── stew_bot.py
+└── templates
+    ├── base.html
+    └── home.html
 ```
 
 To set up virtual environment
@@ -45,7 +53,7 @@ To test Flask App
 ```
 flask --app app run
 ```
-Open: **http://127.0.0.1:5000**
+Open: http://127.0.0.1:5000
 
 ## Documentation
 
@@ -54,7 +62,7 @@ Refer to Praw Documentation for more info [Praw](https://praw.readthedocs.io/en/
 ## Goals
 - Build in basic error handling for script
 - Gather necessary data, simplify pipeline
-- Create overlying Flask App to render Ladle
+- Create overlying Flask App to render Ladle with good UI
 - Add command line job availability or auto-running capabilities
 - Create simple documentation
 
