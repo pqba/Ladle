@@ -7,7 +7,7 @@ app = fk.Flask(__name__,static_folder="static",template_folder="templates")
 def root():
     method = fk.request.method
     redditContent = "hi there!"
-    posts = stew_bot.load_posts(5)
+    posts = stew_bot.relevant_info(stew_bot.load_posts(5))
     return fk.render_template("home.html",content=redditContent,loadedPosts=posts)
 
 
