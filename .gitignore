@@ -3,3 +3,5 @@ venv/
 myenv/
 # Ignore pycache
 __pycache__/
+#Ignore .idea
+.idea/
