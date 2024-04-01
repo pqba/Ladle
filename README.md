@@ -27,6 +27,8 @@ Project Structure
 ├── praw.ini
 ├── requirements.txt
 ├── static
+│   ├── favicon.ico
+│   ├── github_icon.png
 │   └── stylesheets
 │       └── style.css
 ├── stew_bot.py
@@ -34,7 +36,6 @@ Project Structure
     ├── base.html
     └── home.html
 ```
-
 To set up virtual environment
 ```
 python3 -m venv venv
