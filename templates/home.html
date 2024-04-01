@@ -1,16 +1,29 @@
-{%extends 'base.html' %} 
+{%extends 'base.html' %}
 
 {% block title %}Ladle Home {% endblock %}
 
 {% block body %}
-<h1>Sub List</h1>
-<li>
-    <ul>A</ul>
-    <ul>B</ul>
-    <ul>C</ul>
-</li>
-<p>Reddit Content: {{content}}</p>
-{% for post in loadedPosts %}
-  {{ post }}
-{% endfor %}
+<div id = "top">
+   <h1> Ladle Mainframe </h1>
+    <p class ="highlight-yellow"><span>Discover curated posts, browse specific subreddit groups, and more!</span></p>
+</div>
+<div id = "posts">
+   <p class="highlight-blue" id="curated-header"><span>Curated Posts</span></p>
+   <ul>
+     {% for post in loadedPosts %}
+       <li id="selected-post">
+           <p>{{post[2]}} {{post[0]}} [{{post[1]}}]</p>
+         <a href="{{ post[-1] }}">Read More</a>
+       </li>
+     {% endfor %}
+   </ul>
+</div>
+<hr>
+<br>
+<div id ="foot">
+   <p> See my GitHub for other projects: </p>
+   <a href="https://github.com/pqba" class="github-link">
+   <img src="../static/github_icon.png" alt="GitHub" class="github-img">
+   </a>
+</div>
 {% endblock %}

@@ -1,4 +1,62 @@
+:root {
+  --pastel-yellow: #f3d250;
+  --pastel-pink: #f4a8ae;
+  --pastel-blue: #a4c2f4;
+}
 
-h1 {
-    color:blue;
+/* Pastel color highlighting */
+.highlight-yellow {
+  background-color: var(--pastel-yellow);
+  padding: 2px 4px; /*Size of the highlighting*/
+   display: inline; /* Display the span as inline */
+}
+
+.highlight-pink {
+  background-color: var(--pastel-pink);
+  padding 2px 4px;
+  display:inline;
+}
+
+.highlight-blue {
+  background-color: var(--pastel-blue);
+  padding 2px 4px;
+  display:inline;
+}
+
+
+/*Simple Font Rule*/
+.reddit-mono-basic {
+  font-family: "Reddit Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+#top {
+    text-align:center;
+}
+
+#selected-post {
+    margin-top:10px;
+}
+.github-img {
+    width: 32px;
+    height : 32px;
+}
+
+#curated-header {
+    font-size: 25px;
+}
+
+#selected-post {
+
+}
+
+#foot {
+   display: flex;
+   align-items:left;
+}
+
+#foot p {
+    padding-right:10px; /*Space btwn para and link*/
 }
