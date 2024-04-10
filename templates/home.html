@@ -5,6 +5,7 @@
 {% block body %}
 <div id = "top">
    <h1> Ladle Mainframe </h1>
+    <p class ="highlight-purple">{{date}} </p>|
     <p class ="highlight-yellow"><span>Discover curated posts, browse specific subreddit groups, and more!</span></p>
 </div>
 <div id = "posts">
@@ -12,7 +13,7 @@
    <ul>
      {% for post in loadedPosts %}
        <li id="selected-post">
-           <p>{{post[2]}} {{post[0]}} [{{post[1]}}]</p>
+           <p>{{post[0]}}: {{post[3]}} {{post[1]}} [{{post[2]}}]</p>
          <a href="{{ post[-1] }}">Read More</a>
        </li>
      {% endfor %}
@@ -22,7 +23,7 @@
 <br>
 <div id ="foot">
    <p> See my GitHub for other projects: </p>
-   <a href="https://github.com/pqba" class="github-link">
+   <a href="https://github.com/pqba" class="github-link" target="_blank">
    <img src="../static/github_icon.png" alt="GitHub" class="github-img">
    </a>
 </div>
