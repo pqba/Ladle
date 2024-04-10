@@ -1,0 +1,21 @@
+{%extends 'base.html' %}
+
+{% block title %}Ladle 404{% endblock %}
+
+{% block body %}
+<div id = "top">
+   <h1>Ladle's Lost...</h1>
+     <p class ="highlight-pink"><span>Ladle has encountered an error, the link or page you tried to navigate to doesn't exist on our servers.</span></p>
+</div>
+<div id = "go-home"class="twenty-margin">
+<p> Head back to the front page:  <a href="/">Home</a>
+</div>
+<div id="spacer"></div>
+<hr>
+<div id ="foot" class="twenty-margin">
+   <p class ="issue"> Open an issue to describe your problem: </p>
+   <a href="https://github.com/pqba/Ladle/issues" class="github-link" target="_blank">
+   <img src="../static/github_icon.png" alt="GitHub" class="github-img">
+   </a>
+</div>
+{% endblock %}

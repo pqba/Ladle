@@ -17,25 +17,6 @@ Ladle is based on the effective and minimalistic UI for [hackernews](https://new
 - Open Reddit for post specifics
 
 ## Run
-Project Structure
-```
-.
-├── README.md
-├── app.py
-├── images
-│   └── LadleApp.png
-├── praw.ini
-├── requirements.txt
-├── static
-│   ├── favicon.ico
-│   ├── github_icon.png
-│   └── stylesheets
-│       └── style.css
-├── stew_bot.py
-└── templates
-    ├── base.html
-    └── home.html
-```
 To set up virtual environment
 ```
 python3 -m venv venv
@@ -71,7 +52,7 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
 ## Goals
 - Build in basic error handling for script
 - Gather necessary data, simplify pipeline
-- * Scrolling, open Reddit, Comment Rendering, individual posts webpage 
+- * Scrolling, open Reddit, Comment tree rendering, individual posts webpage 
 - Create overlying Flask App to render Ladle with good UI
 - Add command line job availability or auto-running capabilities
 - Create simple documentation for self-hosting
