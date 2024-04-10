@@ -17,23 +17,6 @@ Ladle is based on the effective and minimalistic UI for [hackernews](https://new
 - Open Reddit for post specifics
 
 ## Run
-Project Structure
-```
-.
-├── README.md
-├── app.py
-├── images
-│   └── LadleApp.png
-├── praw.ini
-├── requirements.txt
-├── static
-│   └── stylesheets
-│       └── style.css
-├── stew_bot.py
-└── templates
-    ├── base.html
-    └── home.html
-```
 
 To set up virtual environment
 ```
