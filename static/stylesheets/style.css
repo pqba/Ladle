@@ -97,3 +97,61 @@
     font-style: italic;
     padding-right: 10px;
 }
+/*Nav Styling*/
+
+#navigator {
+    background-color: #eee
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#navigator a {
+    color: #333
+    text-decoration: none;
+    padding: 10px;
+}
+
+#navigator a:hover {
+     background-color:  var(--pastel-orange);
+}
+#navigator a:active {
+    background-color:gray;
+}
+#navigator a:link,
+#navigator a:visited {
+    color: inherit;
+}
+
+#navigator a.active {
+    font-weight: bold;
+    color: inherit;
+}
+
+/*Sub Form Styling*/
+.subreddit-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.input-group {
+  margin-bottom: 0.5rem;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 1rem;
+}
+
+.curated-button {
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.curated-button:hover {
+  background-color: #ddd; /* Slightly darker background */
+}

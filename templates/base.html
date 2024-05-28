@@ -1,15 +1,19 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-   <meta charset='utf-8'>
-  <title> {% block title %}{% endblock %} </title>
-  <link rel="stylesheet" href="../static/stylesheets/style.css">
- <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <!--Loads nice Reddit Style Font-->
+    <meta charset='utf-8'>
+    <title> {% block title %}{% endblock %} </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap" rel="stylesheet">
 </head>
-<body class = "reddit-mono-basic">
+<body class="reddit-mono-basic">  <div id="navigator">
+    <a href="/">Home</a>
+    <a href="/subreddit_list">Curate List</a>
+    <a href="/about">About</a>
+</div>
   {% block body %}
   {% endblock %}
 </body>
