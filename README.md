@@ -30,8 +30,9 @@ To configure up ```praw.ini``` file simply place in your actual:
 - username
 - password
 - user_agent
-
 Change other configurations in default or add more bots as necessary.
+
+For caching, Flask's **Sessions** are used. In the ```.env``` file use a properly secured secret key or export a secret key in production.
 
 To execute base Ladle functionality
 ```
@@ -51,8 +52,10 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
 
 ## Goals
 - Build in basic error handling for script
+- Render a loading page (json fetching?) until content is loading
 - Gather necessary data, simplify pipeline
-- * Scrolling, open Reddit, Comment tree rendering, individual posts webpage 
+- * Manage cookies / login or logout of basic profiles
+- Scrolling, open Reddit, Comment tree rendering, individual posts webpage 
 - Create overlying Flask App to render Ladle with good UI
 - Add command line job availability or auto-running capabilities
 - Create simple documentation for self-hosting
