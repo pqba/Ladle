@@ -1,5 +1,5 @@
 import praw
-
+from prawcore import NotFound
 
 # Documentation: https://praw.readthedocs.io/en/stable/
 # Inspiration: https://praw.readthedocs.io/en/latest/tutorials/reply_bot.html
@@ -56,6 +56,14 @@ def relevant_info(content: list) -> list:
         display.append(relevant)
     return display
 
+# FROM: https://www.reddit.com/r/redditdev/comments/68dhpm/praw_best_way_to_check_if_subreddit_exists_from/
+def sub_exists(subname:str):
+    exists = True
+    try:
+        load_ladle().subreddits.search_by_name(subname, exact=True)
+    except NotFound:
+        exists = False
+    return exists
 
 def get_comment_list(post):
     post.comments.replace_more(limit=None)
