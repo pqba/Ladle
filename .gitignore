@@ -5,3 +5,5 @@ myenv/
 __pycache__/
 #Ignore .idea
 .idea/
+# Ignore sessions
+flask_session/
