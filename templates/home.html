@@ -1,4 +1,4 @@
-{%extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Ladle Home {% endblock %}
 
@@ -17,6 +17,10 @@
          <a href="{{ post[-1] }}">Read More</a>
        </li>
      {% endfor %}
+     <div class="post-link">
+      <a href="/more-posts" >Additional Posts</a>
+     </div>
+     
    </ul>
 </div>
 <hr>

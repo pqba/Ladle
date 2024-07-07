@@ -1,5 +1,5 @@
 import flask as fk
-from flask_session import Session
+from flask import session
 import stew_bot
 from datetime import date
 from dotenv import load_dotenv
@@ -15,7 +15,6 @@ app.config['SESSION_TYPE'] = 'filesystem'
 
 if not app.config['SECRET_KEY']:
     raise ValueError("SECRET_KEY environment variable is not set!")
-Session(app)
 
 sub_profiles = {
     "cs+math": ["math", "machinelearning", "computerscience", "calculus", "askmath"],
@@ -33,7 +32,11 @@ def root():
     if 'content' not in fk.session:
         fk.session["content"] = sublist
     current_date = str(date.today())
-    posts = stew_bot.relevant_info(stew_bot.load_posts(10, fk.session["content"]))
+    
+    loaded_posts = stew_bot.load_posts(10,fk.session["content"])
+    save_posts(loaded_posts)
+    posts = stew_bot.relevant_info(loaded_posts)
+    
     return fk.render_template("home.html", date=current_date, loadedPosts=posts)
 
 
@@ -60,6 +63,23 @@ def get_subs():
 @app.route("/about",methods=["GET"])
 def about():
     return fk.render_template("about.html")
+
+@app.route("/more-posts",methods=["GET","POST"])
+def additional_posts():
+    if 'posts' not in fk.session:
+        return fk.redirect("/")
+    for submission_str in fk.session["posts"]:
+        stew_bot.mark_seen(submission_str)
+
+    new_content = stew_bot.load_posts(10,fk.session["content"])
+    save_posts(new_content)
+    current_date = str(date.today())
+    new_posts = stew_bot.relevant_info(new_content)
+    return fk.render_template("home.html",date=current_date,loadedPosts=new_posts)
+
+def save_posts(reddit_posts:list):
+    post_list = [str(p[0].id) for p in reddit_posts]
+    fk.session["posts"] = post_list
 
 # Make sure list of subs is full and actual subreddits
 def valid_subs(sublist: list[str]):

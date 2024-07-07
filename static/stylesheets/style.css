@@ -6,37 +6,46 @@
   --pastel-orange: #fcab85;
   --pastel-purple: #d9b3e2;
 }
+
 /* Pastel color highlighting */
 .highlight-yellow {
   background-color: var(--pastel-yellow);
-  padding: 2px 4px; /*Size of the highlighting*/
-   display: inline; /* Display the span as inline */
+  padding: 2px 4px;
+  /*Size of the highlighting*/
+  display: inline;
+  /* Display the span as inline */
 }
+
 .highlight-pink {
   background-color: var(--pastel-pink);
-  padding 2px 4px;
-  display:inline;
+  padding: 2px 4px;
+  display: inline;
 }
+
 .highlight-blue {
   background-color: var(--pastel-blue);
-  padding 2px 4px;
-  display:inline;
+  padding: 2px 4px;
+  display: inline;
 }
+
 .highlight-green {
   background-color: var(--pastel-green);
-  padding 2px 4px;
-  display:inline;
+  padding: 2px 4px;
+  display: inline;
 }
-.highlight-orange{
+
+.highlight-orange {
   background-color: var(--pastel-orange);
-  padding 2px 4px;
-  display:inline;
+  padding: 2px 4px;
+  display: inline;
 }
-.highlight-purple{
+
+.highlight-purple {
   background-color: var(--pastel-purple);
-  padding 2px 4px;
-  display:inline;
+  padding: 2px 4px;
+  display: inline;
 }
+
 /*Simple Font Rule*/
 .reddit-mono-basic {
   font-family: "Reddit Mono", monospace;
@@ -46,88 +55,91 @@
 }
 
 #top {
-    text-align:center;
+  text-align: center;
 }
 
 #selected-post {
-    margin-top:10px;
+  margin-top: 10px;
 }
+
 .github-img {
-    width: 32px;
-    height : 32px;
+  width: 32px;
+  height: 32px;
 }
 
 #curated-header {
-    font-size: 25px;
+  font-size: 25px;
 }
 
-#selected-post {
-
-}
+#selected-post {}
 
 #foot {
-   display: flex;
-   align-items:left;
+  display: flex;
+  align-items: left;
 }
 
 #foot p {
-    padding-right:10px; /*Space btwn para and link*/
+  padding-right: 10px;
+  /*Space btwn para and link*/
 }
 
 #spacer {
-    margin-bottom:30px;
+  margin-bottom: 30px;
 }
 
 .twenty-margin {
-    margin:20px;
+  margin: 20px;
 }
 
 #go-home a {
-    color: blue;
-    text-decoration: none;
-    transition: color 0.3s ease;
+  color: blue;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 #go-home a:hover {
-    color:  var(--pastel-pink);
-    text-decoration: underline;
+  color: var(--pastel-pink);
+  text-decoration: underline;
 }
 
 .issue {
-    font-style: italic;
-    padding-right: 10px;
+  font-style: italic;
+  padding-right: 10px;
 }
+
 /*Nav Styling*/
 
 #navigator {
-    background-color: #eee
-    padding: 10px;
-    margin: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background-color: #eee;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #navigator a {
-    color: #333
-    text-decoration: none;
-    padding: 10px;
+  color: #333;
+  text-decoration: none;
+  padding: 10px;
 }
 
 #navigator a:hover {
-     background-color:  var(--pastel-orange);
+  background-color: var(--pastel-orange);
 }
+
 #navigator a:active {
-    background-color:gray;
+  background-color: gray;
 }
+
 #navigator a:link,
 #navigator a:visited {
-    color: inherit;
+  color: inherit;
 }
 
 #navigator a.active {
-    font-weight: bold;
-    color: inherit;
+  font-weight: bold;
+  color: inherit;
 }
 
 /*Sub Form Styling*/
@@ -153,5 +165,31 @@
 }
 
 .curated-button:hover {
-  background-color: #ddd; /* Slightly darker background */
+  background-color: #ddd;
+  /* Slightly darker background */
+}
+
+.post-link {
+  margin:10px;
+  padding:10px;
+  text-align: center;
+  color:#333;
+  
+}
+.post-link a {
+  text-decoration: none;
+  text-align: center;
+  color:darkgray;
+}
+
+.post-link a:link,
+.post-link a:visited {
+  color: inherit;
+}
+#navigator a:active {
+  color:darkblue;
+}
+
+.post-link a:hover {
+  background-color: var(--pastel-blue);
 }
