@@ -3,7 +3,8 @@ venv/
 myenv/
 # Ignore pycache
 __pycache__/
-#Ignore .idea
+#Ignore IDE folders
 .idea/
+.vscode/
 # Ignore sessions
 flask_session/

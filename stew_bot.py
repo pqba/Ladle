@@ -56,6 +56,14 @@ def relevant_info(content: list) -> list:
         display.append(relevant)
     return display
 
+# Mark string converted post as seen by hiding it
+def mark_seen(post:str):
+    try:
+        reddit_post = load_ladle().submission(post)
+        reddit_post.hide()
+    except:
+        print("Invalid post. Cannot mark as seen.")
+
 # FROM: https://www.reddit.com/r/redditdev/comments/68dhpm/praw_best_way_to_check_if_subreddit_exists_from/
 def sub_exists(subname:str):
     exists = True
@@ -69,7 +77,6 @@ def get_comment_list(post):
     post.comments.replace_more(limit=None)
     for comment in post.comments.list():
         print(comment.body)
-
 
 def get_top_level_comments(post):
     post.comments.replace_more(limit=0)
