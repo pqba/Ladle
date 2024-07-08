@@ -24,7 +24,9 @@ source myenv/bin/activate
 pip install -r requirements.txt
 ```
 
-Configure `praw.ini` by inputting
+Create and configure a `praw.ini` file by inputting
+> [.ini Documentation](https://praw.readthedocs.io/en/stable/getting_started/configuration/prawini.html)
+
 - client_id
 - client_secret
 - username
@@ -44,7 +46,7 @@ flask --app app run
 ```
 Open: http://127.0.0.1:5000 on local machine
 
-> For caching, Flask's **Sessions** are used. In the `.env` file use a properly secured key for production.
+> For caching, Flask **Sessions** are used. In the `.env` file use a properly secured key for production.
 
 ## Documentation
 
@@ -60,7 +62,9 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
 - Inspect user profiles
 - Add command line job availability or auto-running capabilities
 - Create simple documentation for self-hosting
-- Host examplary static version
+- Host examplary version
+- * Use [pythonanywhere](https://www.pythonanywhere.com/)
+
 
 ## License
 
