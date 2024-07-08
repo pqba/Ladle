@@ -42,21 +42,30 @@ python3 stew_bot.py
 
 Frontend app
 ```bash
-flask --app app run
+flask --app app run --port 7150
 ```
-Open: http://127.0.0.1:5000 on local machine
+Open: http://127.0.0.1:7150 on local machine
 
 > For caching, Flask **Sessions** are used. In the `.env` file use a properly secured key for production.
 
-## Documentation
+## Technology and Documentation
 
-Refer to Praw Documentation for more info:  [Praw Docs](https://praw.readthedocs.io/en/stable/index.html)\
+* Praw for Reddit API
+* nh3 for input sanitization
+* Flask and Jinja
+* HTML/CSS
+
+[Flask Docs](https://flask.palletsprojects.com/en/latest/)
+[nh3 Docs](https://nh3.readthedocs.io/en/latest/)
+[Praw Docs](https://praw.readthedocs.io/en/stable/index.html)\
+
 Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.com/wiki/api/) 
 
 ### Goals
 - Build in basic error handling for script (500 errors)
 - Render a loading page (json fetching?) until content is done loading
 - Simplify data pipeline
+- Simple search on user,post, or subreddit page
 - * Manage cookies / login or logout of basic profiles
 - Comment tree rendering, load comments
 - Inspect user profiles

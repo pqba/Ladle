@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} Ladle r/{{subreddit.name}} {% endblock %}
+
+{% block body %}
+<div class ="subreddit-container">
+    <h2>r/{{subreddit.name}}</h2>
+    <p>{{subreddit.subs}} subscribers</p>
+    <p>Created on {{subreddit_created}}</p>
+    <img src="{{ subreddit_bg }}">
+    <img src="{{ subreddit_icon }}">
+    <p>{{subreddit.desc}}</p>
+
+
+</div>
+{% endblock %}

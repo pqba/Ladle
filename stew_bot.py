@@ -1,7 +1,9 @@
 import praw
 from prawcore import NotFound
+import nh3
 
 # Documentation: https://praw.readthedocs.io/en/stable/
+
 # Inspiration: https://praw.readthedocs.io/en/latest/tutorials/reply_bot.html
 
 # Bot Name: u/theLadled
@@ -57,52 +59,111 @@ def relevant_info(content: list) -> list:
         display.append(relevant)
     return display
 
-def submission_info(post_id:str):
-    data = {}
-    reddit_post = load_ladle().submission(post_id)
+def user_info(user_name:str):
+    user_name = user_name.lower() # Reddit has lowercase user data
+    if not user_exists(username=user_name):
+        return None
+    person_data = {}
+    user_model = load_ladle().redditor(user_name)
+
+    person_data['who'] = user_name
+    person_data['id'] = user_model.id
+
+    person_data['utc'] = user_model.created_utc
+    person_data['c_karma'] = user_model.comment_karma
+    person_data['l_karma'] = user_model.link_karma
+    person_data['icon'] = user_model.icon_img
+
+    # TODO: finish User content
+    #recent_comments = user_model.comments.new(limit=5)
+    #parsed_comments = [c.body for c in recent_comments]
+    #recent_posts = user_model.posts.new(limit=5)
+    #person_data['r_comment'] = parsed_comments
+    # person_data['r_posts'] =  ???
+    return person_data
+
+def subreddit_info(sub_name:str):
+    sub_name = sub_name.lower()
+    if not sub_exists(sub_name):
+        return None
+    sub_data = {}
+    sub_model = load_ladle().subreddit(sub_name)
+    
+    sub_data['id']   = sub_model.id
+    sub_data['name'] = sub_name
+    sub_data['desc'] = sub_model.public_description
+    sub_data['utc']  = sub_model.created_utc
+    sub_data['subs'] = sub_model.subscribers
+    sub_data['safe'] = sub_model.over18
+    return sub_data
+
+def post_info(post_id:str):
+   if not post_exists(post_id):
+       return None
+   post_data = {}
+   post_model = load_ladle().submission(post_id)
     
     # Post info
-    data['id'] = post_id
-    data['url'] = reddit_post.url
-    data['title'] = reddit_post.title
-    data['text'] = reddit_post.selftext
+   post_data['id']    = post_id
+   post_data['url']   = post_model.url
+   post_data['title'] = post_model.title
+   post_data['text']  = post_model.selftext
     
     # Popularity
-    data['score'] =  reddit_post.score
-    data['ratio'] = reddit_post.upvote_ratio
+   post_data['score'] = post_model.score
+   post_data['ratio'] = post_model.upvote_ratio
     
-    # Author
-    author = reddit_post.author
-    data['who'] = author.name
-    data['by-icon'] = author.icon_img
+   # Author
+   author = post_model.author
+   post_data['who'] = author.name
+   post_data['by-icon'] = author.icon_img
 
-    # Metadata
-    data['content'] = reddit_post.over_18
-    data['sub'] = reddit_post.subreddit
-    data['utc'] = reddit_post.created_utc
+   # Metadata
+   post_data['safe']    = post_model.over_18
+   post_data['sub']     = post_model.subreddit
+   post_data['utc']     = post_model.created_utc
+   post_data['flair']   = post_model.link_flair_text
+   post_data['locked']  = post_model.locked
 
-    # Comments
-    data['nc'] = reddit_post.num_comments
-    # data['comments'] = get_comment_list()
+   # Comments
+   post_data['nc'] = post_model.num_comments
+   #post_data['comments'] = get_comment_list()
 
-    return data
+   return post_data
 
 # Mark string converted post as seen by hiding it
-def mark_seen(post:str):
-    try:
-        reddit_post = load_ladle().submission(post)
-        reddit_post.hide()
-    except:
-        print("Invalid post. Cannot mark as seen.")
+def mark_seen(post_id:str):
+    if not post_exists(post_id):
+        return
+    post_model = load_ladle().submission(post_id)
+    post_model.hide()
 
 # FROM: https://www.reddit.com/r/redditdev/comments/68dhpm/praw_best_way_to_check_if_subreddit_exists_from/
 def sub_exists(subname:str):
-    exists = True
     try:
         load_ladle().subreddits.search_by_name(subname, exact=True)
     except NotFound:
-        exists = False
-    return exists
+        return False
+    return True
+
+def user_exists(username:str):
+    username = username.lower() # Lowercase search
+    try: 
+        load_ladle().redditor(username).submissions
+        load_ladle().redditor(username).id
+    except NotFound: 
+        return False
+    return True
+
+def post_exists(post_id:str):
+    try:
+        load_ladle().submission(post_id).score
+    except NotFound:
+        return False
+    return True
+
+def clean(client_input:str):
+    return nh3.clean(client_input)
 
 def get_comment_list(post):
     post.comments.replace_more(limit=None)
