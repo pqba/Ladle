@@ -6,5 +6,7 @@ __pycache__/
 #Ignore IDE folders
 .idea/
 .vscode/
+# Ignore praw folder
+praw.ini
 # Ignore sessions
 flask_session/
