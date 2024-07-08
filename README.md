@@ -1,8 +1,8 @@
 # Ladle
 
-<img src="images/LadleApp.png" width="512" alt="Ladle Logo">
+<img src="static/images/LadleApp.png" width="256" alt="Ladle Logo">
 
-**Ladle** is a dynamic bot that brews together top news, notable specified subreddit posts, and interesting topics without the clutter or doomscroll from visiting the website. 
+**Ladle** is a dynamic application that brews together top news, notable specified subreddit posts, and interesting topics without the clutter or doomscroll from visiting the website. 
 
 Quickly peek at the default **r/popular** for a specific country or curate a specific sub interest list. 
 
@@ -17,46 +17,47 @@ Ladle is based on the effective and minimalistic UI for [hackernews](https://new
 - Open Reddit for post specifics
 
 ## Run
-To set up virtual environment
-```
-python3 -m venv venv
-source venv/bin/activate
+Set up virtual environment
+```bash
+python3 -m venv myenv
+source myenv/bin/activate
 pip install -r requirements.txt
 ```
 
-To configure up ```praw.ini``` file simply place in your actual:
+Configure `praw.ini` by inputting
 - client_id
 - client_secret
 - username
 - password
 - user_agent
+
 Change other configurations in default or add more bots as necessary.
 
-For caching, Flask's **Sessions** are used. In the ```.env``` file use a properly secured secret key or export a secret key in production.
-
-To execute base Ladle functionality
-```
+Backend functionality
+```bash
 python3 stew_bot.py
 ```
 
-To run frontend application
-```
+Frontend app
+```bash
 flask --app app run
 ```
 Open: http://127.0.0.1:5000 on local machine
+
+> For caching, Flask's **Sessions** are used. In the `.env` file use a properly secured key for production.
 
 ## Documentation
 
 Refer to Praw Documentation for more info:  [Praw Docs](https://praw.readthedocs.io/en/stable/index.html)\
 Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.com/wiki/api/) 
 
-## Goals
-- Build in basic error handling for script
-- Render a loading page (json fetching?) until content is loading
-- Gather necessary data, simplify pipeline
+### Goals
+- Build in basic error handling for script (500 errors)
+- Render a loading page (json fetching?) until content is done loading
+- Simplify data pipeline
 - * Manage cookies / login or logout of basic profiles
-- Scrolling, open Reddit, Comment tree rendering, individual posts webpage 
-- Create overlying Flask App to render Ladle with good UI
+- Comment tree rendering, load comments
+- Inspect user profiles
 - Add command line job availability or auto-running capabilities
 - Create simple documentation for self-hosting
 - Host examplary static version

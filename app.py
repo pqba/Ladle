@@ -1,7 +1,7 @@
 import flask as fk
 from flask import session
 import stew_bot
-from datetime import date
+import datetime
 from dotenv import load_dotenv
 import os
 
@@ -31,10 +31,10 @@ sublist = ["piano", "guitar", "classicalmusic", "learnprogramming", "computersci
 def root():
     if 'content' not in fk.session:
         fk.session["content"] = sublist
-    current_date = str(date.today())
+    current_date = str(datetime.date.today())
     
     loaded_posts = stew_bot.load_posts(10,fk.session["content"])
-    save_posts(loaded_posts)
+    remember_posts(loaded_posts)
     posts = stew_bot.relevant_info(loaded_posts)
     
     return fk.render_template("home.html", date=current_date, loadedPosts=posts)
@@ -72,12 +72,19 @@ def additional_posts():
         stew_bot.mark_seen(submission_str)
 
     new_content = stew_bot.load_posts(10,fk.session["content"])
-    save_posts(new_content)
-    current_date = str(date.today())
+    remember_posts(new_content)
+    current_date = str(datetime.date.today())
     new_posts = stew_bot.relevant_info(new_content)
     return fk.render_template("home.html",date=current_date,loadedPosts=new_posts)
 
-def save_posts(reddit_posts:list):
+@app.route("/post/<id>",methods=["GET"])
+def get_post(id):
+    info = stew_bot.submission_info(id)
+    date_time = datetime.datetime.fromtimestamp(info['utc'])
+    when = date_time.strftime('%Y-%m-%d')
+    return fk.render_template("post.html",info=info,u_icon=info['by-icon'],p_date=when,p_url=info['url'])
+
+def remember_posts(reddit_posts:list):
     post_list = [str(p[0].id) for p in reddit_posts]
     fk.session["posts"] = post_list
 

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Ladle Post |{{info.id}}| {% endblock %}
+
+{% block body %}
+<div class = "post-container">
+    <h2>{{info.title}}</h2>
+    <div class ="post-meta">
+        <p>r/{{info.sub}}</p>
+        <p>By {{info.who}}</p>
+        <p>On {{p_date}}</p>
+        <img src="{{ u_icon | default(url_for('static', filename='images/default_pfp.png')) }}" alt="User PFP"/>
+        <!--TODO: fix default PFP being blocked by CORS-->
+        <div class="post-content">
+    </div>
+        <p>{{info.text}}</p>
+    </div>
+    <div class ="post-stats">
+        <p>{{info.score}} votes [{{info.ratio}}]%</p>
+    </div>
+    <div class ="post-url"><a href="{{ p_url }}">Full Post</a></div>
+</div>
+
+
+{% endblock %}

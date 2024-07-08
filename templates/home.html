@@ -8,13 +8,14 @@
     <p class ="highlight-purple">{{date}} </p>|
     <p class ="highlight-yellow"><span>Discover curated posts, browse specific subreddit groups, and more!</span></p>
 </div>
+<div id ="spacer"></div>
 <div id = "posts">
    <p class="highlight-blue" id="curated-header"><span>Curated Posts</span></p>
    <ul>
      {% for post in loadedPosts %}
        <li id="selected-post">
            <p>{{post[0]}}: {{post[3]}} {{post[1]}} [{{post[2]}}]</p>
-         <a href="{{ post[-1] }}">Read More</a>
+         <a href="/post/{{post[-1]}}">See More</a>
        </li>
      {% endfor %}
      <div class="post-link">
@@ -28,7 +29,7 @@
 <div id ="foot">
    <p> See my GitHub for other projects: </p>
    <a href="https://github.com/pqba" class="github-link" target="_blank">
-   <img src="../static/github_icon.png" alt="GitHub" class="github-img">
+   <img src="../static/images/github_icon.png" alt="GitHub" class="github-img">
    </a>
 </div>
 {% endblock %}

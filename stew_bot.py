@@ -37,8 +37,9 @@ def load_posts(amount: int, selected_subs=[]):
 
     posts = []
     for submission in reddit.subreddit(search).hot(limit=amount):
-        info = (submission, f"r/{str(submission.subreddit.display_name).lower()}", f"{submission.title}",
-                submission.upvote_ratio, submission.score, f"{submission.url}")
+        info = (submission, f"r/{str(submission.subreddit.display_name).lower()}", 
+                f"{submission.title}", submission.upvote_ratio, submission.score,
+                f"{submission.url}",submission.id)
         posts.append(info)
 
     ordered = sort_posts(posts, True)
@@ -55,6 +56,36 @@ def relevant_info(content: list) -> list:
         relevant = item[1:]  # Only the title, amount of upvotes, like ratio, and url
         display.append(relevant)
     return display
+
+def submission_info(post_id:str):
+    data = {}
+    reddit_post = load_ladle().submission(post_id)
+    
+    # Post info
+    data['id'] = post_id
+    data['url'] = reddit_post.url
+    data['title'] = reddit_post.title
+    data['text'] = reddit_post.selftext
+    
+    # Popularity
+    data['score'] =  reddit_post.score
+    data['ratio'] = reddit_post.upvote_ratio
+    
+    # Author
+    author = reddit_post.author
+    data['who'] = author.name
+    data['by-icon'] = author.icon_img
+
+    # Metadata
+    data['content'] = reddit_post.over_18
+    data['sub'] = reddit_post.subreddit
+    data['utc'] = reddit_post.created_utc
+
+    # Comments
+    data['nc'] = reddit_post.num_comments
+    # data['comments'] = get_comment_list()
+
+    return data
 
 # Mark string converted post as seen by hiding it
 def mark_seen(post:str):
