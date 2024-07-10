@@ -22,7 +22,6 @@ def setup_ladle(client_id: str, client_secret: str, pw: str, u_agent: str, uname
     )
     return reddit
 
-
 def load_posts(amount: int, selected_subs=[]):
     if selected_subs is None:
         selected_subs = []
@@ -175,7 +174,7 @@ def get_top_level_comments(post):
     for top_level_comment in post.comments:
         print(str(top_level_comment.body).replace("\n", "|"))
 
-
+ 
 # TODO: finish building comment tree using parent child relationship, allow for expansion as well
 def build_comment_tree(post):
     pass

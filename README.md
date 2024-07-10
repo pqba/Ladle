@@ -69,6 +69,7 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
 - * Manage cookies / login or logout of basic profiles
 - Comment tree rendering, load comments
 - Inspect user profiles
+- Take a look at ASYNC loading: https://asyncpraw.readthedocs.io/en/stable/code_overview/models/submission.html
 - Add command line job availability or auto-running capabilities
 - Create simple documentation for self-hosting
 - Host examplary version

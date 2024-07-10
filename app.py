@@ -20,7 +20,7 @@ if not app.config['SECRET_KEY']:
 
 sub_profiles = {
     "cs+math": ["math", "machinelearning", "computerscience", "calculus", "askmath"],
-    "music": ["piano", "audiophile", "guitar", "musictheory"],
+    "music": ["piano", "audiophile", "guitar", "musictheory","wearethemusicmakers"],
     "arts": ["art", "design", "diy", "painting", "photography"],
     "health": ["fitness", "nutrition", "yoga", "weightlifting", "meditation"],
     "sports": ["sports", "nba", "soccer", "nfl", "mls"]
