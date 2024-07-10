@@ -3,7 +3,7 @@
 
 **Ladle** is a dynamic application that brews together top news, notable specified subreddit posts, and interesting topics without the clutter of the app, for local use.
 
-Quickly peek at the default **r/popular** or 
+Quickly peek at **r/popular** or make your own feed.
 
 ## Features
 UI and design methodology is based on [hackernews](https://news.ycombinator.com/) 
@@ -40,25 +40,24 @@ python3 stew_bot.py
 flask --app app run
 ```
 
-> For caching, Flask **Sessions** are used. In the `.env` file use a properly secured key for production.
+> Flask's Sessions and Cache are used to store data. In the `.env` file use a properly secured key for production.
 
 ## Technology and Documentation
 
 * Praw for Reddit API
-* nh3 for input sanitization, markdown for MD rendering
+* nh3 for input sanitization, markdown for rendering
 * Flask and Jinja
 * HTML/CSS
-
-[Flask Docs](https://flask.palletsprojects.com/en/latest/)
-
-[Praw Docs](https://praw.readthedocs.io/en/stable/index.html)
+* [Flask Docs](https://flask.palletsprojects.com/en/latest/)
+* [Praw Docs](https://praw.readthedocs.io/en/stable/index.html)
 
 Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.com/wiki/api/) 
 
-### Goals
+### Plans
 - Use **INFO** api method for calls
-  - https://praw.readthedocs.io/en/stable/code_overview/reddit_instance.html#praw.Reddit.info
-- Build in basic error handling for script (500 errors)
+  - [praw.Reddit.info](https://praw.readthedocs.io/en/stable/code_overview/reddit_instance.html#praw.Reddit.info)
+- Add testing suite for app
+  - [flask_tests](https://flask.palletsprojects.com/en/3.0.x/testing/#identifying-tests)   
 - Speed up rendering / fetching time or use async
 - Render a loading page (json fetching?) until content is done loading
 - Simplify data pipeline
@@ -67,7 +66,7 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
 - Comment tree rendering, load comments
 - Inspect user profiles
 - Take a look at ASYNC loading 
-  * https://asyncpraw.readthedocs.io/en/stable/code_overview/models/submission.html
+  * [Async Praw](https://asyncpraw.readthedocs.io/en/stable/code_overview/models/submission.html)
 - Add command line job availability or auto-running capabilities
 - Create simple documentation for self-hosting
 - Host exemplary version
