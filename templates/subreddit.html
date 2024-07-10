@@ -3,13 +3,17 @@
 
 {% block body %}
 <div class ="subreddit-container">
-    <h2>r/{{subreddit.name}}</h2>
-    <p>{{subreddit.subs}} subscribers</p>
-    <p>Created on {{subreddit_created}}</p>
+    <div class ="subreddit-top">
+    <h2>r/{{subreddit.name}}{% if subreddit.nsfw == true %}
+    <img src="/static/images/warning.svg" height="24px"/>
+    {% endif %}</h2>
+
+    </div>
+    <p class ="highlight-purple">{{subreddit.subs}} subscribers</p>
+
+    <p class="smaller-text">Created on {{subreddit_created}}</p>
     <img src="{{ subreddit_bg }}">
     <img src="{{ subreddit_icon }}">
-    <p>{{subreddit.desc}}</p>
-
-
+    <p><b>Description: </b>{{subreddit.desc}}</p>
 </div>
 {% endblock %}

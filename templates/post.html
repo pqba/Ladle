@@ -4,22 +4,31 @@
 
 {% block body %}
 <div class = "post-container">
-    <h2>{{info.title}}</h2>
+    <a class="post-link"  href="{{ p_url }}"><h2>{{info.title}} {% if info.nsfw == true %}
+    <img src="/static/images/warning.svg" height="24px"/>
+    {% endif %}</h2></a>
     <div class ="post-meta">
-        <p>r/{{info.sub}}</p>
-        <p>By {{info.who}}</p>
-        <p>On {{p_date}}</p>
-        <img src="{{ u_icon | default(url_for('static', filename='images/default_pfp.png')) }}" alt="User PFP"/>
+        <h3>r/{{info.sub}}</h3>
+        <div>
+            <p class ="smaller-text highlight-blue"><a class="post-link" href="/user/{{ info.who }}">u/{{info.who}}</a></p>
+        </div>
+        <p class="smaller-text">On {{p_date}}</p>
+        <img src="{{ u_icon }}" alt="User PFP" height="64px"/>
         <!--TODO: fix default PFP being blocked by CORS-->
-        <div class="post-content">
+
     </div>
-        <p>{{info.text}}</p>
+    <div class="post-content">
+        {% if info.lock == true %}
+    <img src="/static/images/lock.svg" height="24px"/>
+    {% endif %}
+        <div class="post-text">{{ p_text | safe }}</div>
     </div>
     <div class ="post-stats">
-        <p>{{info.score}} votes [{{info.ratio}}]%</p>
+        <p>  <img src="/static/images/up-arrow.svg" height="15px"> {{info.score}}  [{{info.ratio}}%] | {{info.nc}} comments</p>
     </div>
-    <div class ="post-url"><a href="{{ p_url }}">Full Post</a></div>
+    <div class="post-comments">
+            <!--TODO: render comments-->
+    </div>
 </div>
-
 
 {% endblock %}

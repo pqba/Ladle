@@ -57,9 +57,22 @@
 #top {
   text-align: center;
 }
-
+.post-link p {
+    text-align:left;
+}
+.post-link {
+    color:#000;
+    text-decoration:none;
+}
+.post-link:hover{
+    text-decoration:underline;
+}
+.post-link:active,.post-link:focus {
+    color:lightgray;
+}
 #selected-post {
   margin-top: 10px;
+  list-style-type:none;
 }
 
 .github-img {
@@ -69,6 +82,7 @@
 
 #curated-header {
   font-size: 25px;
+  margin-left:2px;
 }
 
 #selected-post {}
@@ -112,7 +126,7 @@
 #navigator {
   background-color: #eee;
   padding: 10px;
-  margin: 10px;
+  margin: 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -162,13 +176,18 @@
   padding: 0.5rem 1rem;
   margin-right: 0.5rem;
   cursor: pointer;
+  font-family: "Reddit Mono",monospace;
+  background-color:lightgray;
+  border-radius:8px;
 }
 
 .curated-button:hover {
   background-color: #ddd;
   /* Slightly darker background */
 }
-
+.submission-btn {
+    text-align:center;
+}
 .post-link {
   margin:10px;
   padding:10px;
@@ -186,10 +205,19 @@
 .post-link a:visited {
   color: inherit;
 }
+.post-text {
+    font-size:.75em;
+    text-decoration:none;
+    padding:1em;
+}
 #navigator a:active {
   color:darkblue;
 }
 
 .post-link a:hover {
   background-color: var(--pastel-blue);
+}
+
+.smaller-text {
+    font-size:.8em;
 }
