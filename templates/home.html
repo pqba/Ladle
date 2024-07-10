@@ -3,33 +3,35 @@
 {% block title %}Ladle Home {% endblock %}
 
 {% block body %}
-<div id = "top">
-   <h1> Ladle Mainframe </h1>
-    <p class ="highlight-purple">{{date}} </p>  |
-    <p class ="highlight-yellow"><span>Discover curated posts, browse specific subreddit groups, and more!</span></p>
+<div id="top">
+  <h1> Ladle Mainframe </h1>
+  <p class="highlight-purple">{{date}} </p> |
+  <p class="highlight-yellow"><span>Discover curated posts, browse specific subreddit groups, and more!</span></p>
 </div>
-<div id ="spacer"></div>
-<div id = "posts">
-   <p class="highlight-blue" id="curated-header">Curated Posts</p>
-   <ul>
-     {% for post in loadedPosts %}
-       <li id="selected-post">
-           <a href="/post/{{post[-1]}}" class="post-link"><p><b>{{post[0]}}</b>  {{post[1]}} </p></a>
-             <img src="/static/images/up-arrow.svg" height="15px"> {{post[3]}} [{{post[2]}}%] | {{post[5]}} comments
-       </li>
-     {% endfor %}
-     <div class="post-link">
-      <a href="/more-posts" >Additional Posts</a>
-     </div>
-     
-   </ul>
+<div id="spacer"></div>
+<div id="posts">
+  <p class="highlight-blue" id="curated-header">Curated Posts</p>
+  <ul>
+    {% for post in loadedPosts %}
+    <li id="selected-post">
+      <a href="/post/{{post[-1]}}" class="post-link">
+        <p><b>{{post[0]}}</b> {{post[1]}} </p>
+      </a>
+      <img src="/static/images/up-arrow.svg" height="15px"> {{post[3]}} [{{post[2]}}%] | {{post[5]}} comments
+    </li>
+    {% endfor %}
+    <div class="post-link">
+      <a href="/more-posts">Additional Posts</a>
+    </div>
+
+  </ul>
 </div>
 <hr>
 <br>
-<div id ="foot">
-   <p> See my GitHub for other projects: </p>
-   <a href="https://github.com/pqba" class="github-link" target="_blank">
-   <img src="../static/images/github_icon.png" alt="GitHub" class="github-img">
-   </a>
+<div id="foot">
+  <p> See my GitHub for other projects: </p>
+  <a href="https://github.com/pqba" class="github-link" target="_blank">
+    <img src="../static/images/github_icon.png" alt="GitHub" class="github-img">
+  </a>
 </div>
 {% endblock %}

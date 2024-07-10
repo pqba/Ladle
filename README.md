@@ -3,7 +3,7 @@
 
 **Ladle** is a dynamic application that brews together top news, notable specified subreddit posts, and interesting topics without the clutter of the app, for local use.
 
-Quickly peek at the default **r/popular** for a specific country or curate a specific sub interest list. 
+Quickly peek at the default **r/popular** or 
 
 ## Features
 UI and design methodology is based on [hackernews](https://news.ycombinator.com/) 
@@ -56,6 +56,8 @@ flask --app app run
 Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.com/wiki/api/) 
 
 ### Goals
+- Use **INFO** api method for calls
+  - https://praw.readthedocs.io/en/stable/code_overview/reddit_instance.html#praw.Reddit.info
 - Build in basic error handling for script (500 errors)
 - Speed up rendering / fetching time or use async
 - Render a loading page (json fetching?) until content is done loading

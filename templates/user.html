@@ -2,10 +2,11 @@
 {% block title %} Ladle {{person.who}} {% endblock %}
 
 {% block body %}
-<div class ="user-container">
+<div class="user-container">
     <h2>u/{{person.who}}</h2>
-    <img src="{{ person_icon }}" height="32px"/>
-    <p class ="user-karma"> Post Karma {{person.l_karma}} Comment Karma {{person.c_karma}}</p>
+    <img src="{{ person_icon }}" height="32px" />
+    <p class="user-karma highlight-green"> <b>Karma:</b> {{person.l_karma}}  for posts | {{person.c_karma}} for comments </p>
+    <div id="spacer"></div>
     <div>
         <h3>Recent Posts</h3>
         <p>...</p>

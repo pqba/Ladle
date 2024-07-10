@@ -24,7 +24,17 @@ def setup_ladle(client_id: str, client_secret: str, pw: str, u_agent: str, uname
     return reddit
 
 
-def load_posts(amount: int, selected_subs=[]):
+def quick_load(amount : int, selected_subs=[]) -> list:
+    if selected_subs is None:
+        selected_subs = []
+    if amount < 0 or amount > 100:
+        amount = 25  # Default Cutoff
+    reddit = load_ladle()
+    posts = []
+    # https://praw.readthedocs.io/en/stable/code_overview/reddit_instance.html#praw.Reddit.info
+    return posts
+
+def load_posts(amount: int, selected_subs=[]) -> list:
     if selected_subs is None:
         selected_subs = []
     if amount < 0 or amount > 100:
@@ -37,7 +47,6 @@ def load_posts(amount: int, selected_subs=[]):
     for sub in sub_list[:-1]:
         search += sub + "+"
     search += sub_list[-1]
-
     posts = []
     for submission in reddit.subreddit(search).hot(limit=amount):
         info = (f"r/{str(submission.subreddit.display_name).lower()}",
@@ -53,7 +62,7 @@ def sort_posts(content: list, inReverse: bool) -> list:
     return sorted(content, key=lambda x: x[2] * x[3], reverse=inReverse)
 
 
-def user_info(user_name: str):
+def user_info(user_name: str) -> dict:
     user_name = user_name.lower()  # Reddit has lowercase user data
     if not user_exists(username=user_name):
         return None
@@ -77,7 +86,7 @@ def user_info(user_name: str):
     return person_data
 
 
-def subreddit_info(sub_name: str):
+def subreddit_info(sub_name: str) -> dict:
     sub_name = sub_name.lower()
     if not sub_exists(sub_name):
         return None
@@ -93,7 +102,7 @@ def subreddit_info(sub_name: str):
     return sub_data
 
 
-def post_info(post_id: str):
+def post_info(post_id: str) -> dict:
     if not post_exists(post_id):
         return None
     post_data = {}
@@ -129,7 +138,7 @@ def post_info(post_id: str):
 
 
 # Mark string converted post as seen by hiding it
-def mark_seen(post_id: str):
+def mark_seen(post_id: str) -> None:
     if not post_exists(post_id):
         return
     post_model = load_ladle().submission(post_id)
@@ -137,7 +146,7 @@ def mark_seen(post_id: str):
 
 
 # FROM: https://www.reddit.com/r/redditdev/comments/68dhpm/praw_best_way_to_check_if_subreddit_exists_from/
-def sub_exists(subname: str):
+def sub_exists(subname: str) -> bool:
     try:
         load_ladle().subreddits.search_by_name(subname, exact=True)
     except NotFound:
@@ -145,7 +154,7 @@ def sub_exists(subname: str):
     return True
 
 
-def user_exists(username: str):
+def user_exists(username: str) -> bool:
     username = username.lower()  # Lowercase search
     try:
         load_ladle().redditor(username).submissions
@@ -163,12 +172,12 @@ def post_exists(post_id: str):
     return True
 
 
-def clean(client_input: str):
+def clean(client_input: str) -> str:
     return nh3.clean(client_input)
 
 
-def get_comment_list(post):
-    post.comments.replace_more(limit=None)
+def get_comment_list(post,lim=None):
+    post.comments.replace_more(limit=lim)
     for comment in post.comments.list():
         print(comment.body)
 
@@ -180,14 +189,12 @@ def get_top_level_comments(post):
 
 
 # TODO: finish building comment tree using parent child relationship, allow for expansion as well
-def build_comment_tree(post):
+def build_comment_tree(comment:praw.models.comment_forest.CommentForest,depth:int):
     pass
 
 
 def main():
-    items = load_posts(2)
-    for post in items:
-        get_top_level_comments(post[0])
+    print("hello, stew_bot.")
 
 
 if __name__ == "__main__":

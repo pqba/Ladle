@@ -1,6 +1,7 @@
+import stew_bot
 import flask as fk
 from flask import session
-import stew_bot
+from flask_caching import Cache
 import datetime
 from dotenv import load_dotenv
 from os import environ
@@ -11,6 +12,11 @@ from markdown import markdown
 load_dotenv()
 
 app = fk.Flask(__name__, static_folder="static", template_folder="templates")
+
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
+# Cache timeout values for pages, in seconds
+LONG_TIMEOUT = 1800
+SHORT_TIMEOUT = 600
 
 # Configure Session
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
@@ -24,11 +30,12 @@ sub_profiles = {
     "music": ["piano", "audiophile", "guitar", "musictheory", "wearethemusicmakers"],
     "arts": ["art", "design", "diy", "painting", "photography"],
     "health": ["fitness", "nutrition", "yoga", "weightlifting", "meditation"],
-    "sports": ["sports", "nba", "soccer", "nfl", "mls"]
+    "sports": ["sports", "nba", "soccer", "nfl", "mls"],
+    "default": ["popular"]
 }
 
-# Official Subreddit Selection
-sublist = ["piano", "guitar", "classicalmusic", "learnprogramming", "computerscience", "machinelearning", "math"]
+# Default Subreddit Selection
+sublist = sub_profiles["default"]
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -42,7 +49,7 @@ def root():
 
     return fk.render_template("home.html", date=current_date, loadedPosts=loaded_posts)
 
-
+# Renders sub_form and gets inputted values, clears cache
 @app.route('/subreddit_list', methods=["GET", "POST"])
 def get_subs():
     if fk.request.method == "POST":
@@ -53,13 +60,14 @@ def get_subs():
         sub_4 = fk.request.form.get("sub_4")
         sub_5 = fk.request.form.get("sub_5")
         subs_raw = [sub_1, sub_2, sub_3, sub_4, sub_5]
-        subs = [s for s in subs_raw if s != "."]  # Specify amount using '.' or name
+        subs = [s for s in subs_raw if s != "."]  # '.' means no sub
         # Validate Form
         if len(subs) > 0 and valid_subs(subs):
             fk.session["content"] = subs
+            cache.clear()
             return fk.redirect("/")
         else:
-            err_msg = "Please choose a valid subreddit config or enter valid subreddit(s) in the form."
+            err_msg = "Please choose a valid subreddit configuration or enter valid subreddit(s) in the form."
             return fk.render_template("sub_form.html", err=err_msg)
     else:
         return fk.render_template("sub_form.html", err="")
@@ -69,7 +77,7 @@ def get_subs():
 def about():
     return fk.render_template("about.html")
 
-
+# Renders 10 more posts on home page, hiding old content and storing new content
 @app.route("/more-posts", methods=["GET", "POST"])
 def additional_posts():
     if 'posts' not in fk.session:
@@ -82,8 +90,9 @@ def additional_posts():
     current_date = str(datetime.date.today())
     return fk.render_template("home.html", date=current_date, loadedPosts=new_content)
 
-
+# Renders post given ID, 404 if invalid
 @app.route("/post/<id>", methods=["GET"])
+@cache.memoize(timeout=LONG_TIMEOUT)
 def get_post(id):
     info = stew_bot.post_info(id)
     if info is None:
@@ -93,8 +102,9 @@ def get_post(id):
     md_text = markdown(info['text'])
     return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'],p_text=md_text)
 
-
+# Renders user info page
 @app.route("/user/<name>", methods=["GET"])
+@cache.memoize(timeout=SHORT_TIMEOUT)
 def get_user(name):
     person = stew_bot.user_info(name)
     if person is None:
@@ -103,8 +113,9 @@ def get_user(name):
     user_created = to_ymd(person['utc'])
     return fk.render_template("user.html", person=person, person_icon=person['icon'])
 
-
+# Renders subreddit,formats subs with commas, 404 if invalid name
 @app.route("/subreddit/<sub_name>")
+@cache.memoize(timeout=LONG_TIMEOUT)
 def get_sub(sub_name):
     sub = stew_bot.subreddit_info(sub_name)
     if sub is None:
@@ -120,26 +131,26 @@ def get_sub(sub_name):
 
 def subreddit_about(sub_name: str):
     url = f"https://www.reddit.com/r/{sub_name}/about.json"
-    # Getting {'message': 'Too Many Requests', 'error': 429}
+    # Getting  -> {'message': 'Too Many Requests', 'error': 429}
     req = requests.get(url)
     parsed = json.loads(req.text)
     print(f"PARSED JSON DATA FOR r/{sub_name}: {parsed}")
     return parsed
 
-
-def to_ymd(utc: str):
+# Converts UTC timestamp to YMD format
+def to_ymd(utc: str) -> str:
     date_time = datetime.datetime.fromtimestamp(utc)
     when = date_time.strftime('%Y-%m-%d')
     return when
 
-
-def remember_posts(reddit_posts: list):
+# Stores post list in session variable
+def remember_posts(reddit_posts: list) -> None:
     post_list = [str(p[-1]) for p in reddit_posts]
     fk.session["posts"] = post_list
 
 
 # Make sure list of subs is valid and > 1
-def valid_subs(sublist: list[str]):
+def valid_subs(sublist: list[str]) -> bool:
     for subreddit in sublist:
         if not subreddit or subreddit == "":
             return False
@@ -152,14 +163,10 @@ def valid_subs(sublist: list[str]):
 def page_not_found(e=""):
     return fk.render_template('404.html', error=e), 404
 
-
-# Ensure responses aren't cached (used from CS50 finance)
-@app.after_request
-def after_request(response):
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Expires"] = 0
-    response.headers["Pragma"] = "no-cache"
-    return response
+@app.errorhandler(500)
+def internal_server_error(e):
+    # note that we set the 500 status explicitly
+    return fk.render_template('500.html',error=e), 500
 
 
 if __name__ == "__main__":

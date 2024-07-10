@@ -3,31 +3,36 @@
 {% block title %}Ladle Post |{{info.id}}| {% endblock %}
 
 {% block body %}
-<div class = "post-container">
-    <a class="post-link"  href="{{ p_url }}"><h2>{{info.title}} {% if info.nsfw == true %}
-    <img src="/static/images/warning.svg" height="24px"/>
-    {% endif %}</h2></a>
-    <div class ="post-meta">
+<div class="post-container">
+    <a class="post-link" href="{{ p_url }}">
+        <h2>{{info.title}} {% if info.nsfw == true %}
+            <img src="/static/images/warning.svg" height="24px" />
+            {% endif %}
+        </h2>
+    </a>
+    <div class="post-meta">
         <h3>r/{{info.sub}}</h3>
         <div>
-            <p class ="smaller-text highlight-blue"><a class="post-link" href="/user/{{ info.who }}">u/{{info.who}}</a></p>
+            <p class="smaller-text highlight-blue"><a class="post-link" href="/user/{{ info.who }}">u/{{info.who}}</a>
+            </p>
         </div>
         <p class="smaller-text">On {{p_date}}</p>
-        <img src="{{ u_icon }}" alt="User PFP" height="64px"/>
+        <img src="{{ u_icon }}" alt="User PFP" height="64px" />
         <!--TODO: fix default PFP being blocked by CORS-->
 
     </div>
     <div class="post-content">
         {% if info.lock == true %}
-    <img src="/static/images/lock.svg" height="24px"/>
-    {% endif %}
+        <img src="/static/images/lock.svg" height="24px" />
+        {% endif %}
         <div class="post-text">{{ p_text | safe }}</div>
     </div>
-    <div class ="post-stats">
-        <p>  <img src="/static/images/up-arrow.svg" height="15px"> {{info.score}}  [{{info.ratio}}%] | {{info.nc}} comments</p>
+    <div class="post-stats">
+        <p> <img src="/static/images/up-arrow.svg" height="15px"> {{info.score}} [{{info.ratio}}%] | {{info.nc}}
+            comments</p>
     </div>
     <div class="post-comments">
-            <!--TODO: render comments-->
+        <!--TODO: render comments-->
     </div>
 </div>
 

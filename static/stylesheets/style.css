@@ -5,6 +5,7 @@
   --pastel-green: #92d7c2;
   --pastel-orange: #fcab85;
   --pastel-purple: #d9b3e2;
+  --pastel-red: #f45d55;
 }
 
 /* Pastel color highlighting */
@@ -46,6 +47,12 @@
   display: inline;
 }
 
+.highlight-red {
+  background-color: var(--pastel-red);
+  padding: 2px 4px;
+  display: inline;
+}
+
 /*Simple Font Rule*/
 .reddit-mono-basic {
   font-family: "Reddit Mono", monospace;
@@ -57,22 +64,29 @@
 #top {
   text-align: center;
 }
+
 .post-link p {
-    text-align:left;
+  text-align: left;
+  margin-top:6px;
 }
+
 .post-link {
-    color:#000;
-    text-decoration:none;
+  color: #000;
+  text-decoration: none;
 }
-.post-link:hover{
-    text-decoration:underline;
+
+.post-link:hover {
+  text-decoration: underline;
 }
-.post-link:active,.post-link:focus {
-    color:lightgray;
+
+.post-link:active,
+.post-link:focus {
+  color: lightgray;
 }
+
 #selected-post {
   margin-top: 10px;
-  list-style-type:none;
+  list-style-type: none;
 }
 
 .github-img {
@@ -82,7 +96,8 @@
 
 #curated-header {
   font-size: 25px;
-  margin-left:2px;
+  margin-left: 2px;
+  margin-bottom: 5px;
 }
 
 #selected-post {}
@@ -176,42 +191,47 @@
   padding: 0.5rem 1rem;
   margin-right: 0.5rem;
   cursor: pointer;
-  font-family: "Reddit Mono",monospace;
-  background-color:lightgray;
-  border-radius:8px;
+  font-family: "Reddit Mono", monospace;
+  background-color: lightgray;
+  border-radius: 8px;
 }
 
 .curated-button:hover {
   background-color: #ddd;
   /* Slightly darker background */
 }
+
 .submission-btn {
-    text-align:center;
-}
-.post-link {
-  margin:10px;
-  padding:10px;
   text-align: center;
-  color:#333;
-  
 }
+
+.post-link {
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  color: #333;
+
+}
+
 .post-link a {
   text-decoration: none;
   text-align: center;
-  color:darkgray;
+  color: darkgray;
 }
 
 .post-link a:link,
 .post-link a:visited {
   color: inherit;
 }
+
 .post-text {
-    font-size:.75em;
-    text-decoration:none;
-    padding:1em;
+  font-size: .75em;
+  text-decoration: none;
+  padding: 1em;
 }
+
 #navigator a:active {
-  color:darkblue;
+  color: darkblue;
 }
 
 .post-link a:hover {
@@ -219,5 +239,5 @@
 }
 
 .smaller-text {
-    font-size:.8em;
+  font-size: .8em;
 }
