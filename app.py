@@ -8,7 +8,6 @@ from os import environ
 import requests
 import json
 from markdown import markdown
-
 load_dotenv()
 
 app = fk.Flask(__name__, static_folder="static", template_folder="templates")
@@ -34,18 +33,15 @@ sub_profiles = {
     "default": ["popular"]
 }
 
-# Default Subreddit Selection
-sublist = sub_profiles["default"]
-
 
 @app.route('/', methods=["GET", "POST"])
-def root():
+def root(loaded_posts=None):
     if 'content' not in fk.session:
-        fk.session["content"] = sublist
+        fk.session["content"] = sub_profiles["default"]
     current_date = str(datetime.date.today())
-
-    loaded_posts = stew_bot.load_posts(50, fk.session["content"])[:10]
-    remember_post_id(loaded_posts)
+    if not loaded_posts:
+        loaded_posts = stew_bot.load_posts(10, fk.session["content"])
+        remember_post_id(loaded_posts)
 
     return fk.render_template("home.html", date=current_date, loadedPosts=loaded_posts)
 
@@ -79,18 +75,19 @@ def about():
     return fk.render_template("about.html")
 
 
-# Renders 10 more posts on home page, hiding old content and storing new content
+# TODO: add pagination
+# Renders 10 more posts on home page, hiding old content and storing new content. Clears cache
 @app.route("/more-posts", methods=["GET", "POST"])
 def additional_posts():
     if 'posts' not in fk.session:
         return fk.redirect("/")
+    cache.clear()
     for submission_str in fk.session["posts"]:
         stew_bot.mark_seen(submission_str)
 
     new_content = stew_bot.load_posts(10, fk.session["content"])
     remember_post_id(new_content)
-    current_date = str(datetime.date.today())
-    return fk.render_template("home.html", date=current_date, loadedPosts=new_content)
+    return root(loaded_posts=new_content)
 
 
 # Renders post given ID, 404 if invalid
@@ -116,7 +113,7 @@ def get_user(name):
         e = stew_bot.clean(f"User doesn't exist or Ladle cannot find u/{name}.")
         return page_not_found(e)
     user_created = to_ymd(person['utc'])
-    return fk.render_template("user.html", person=person, person_icon=person['icon'])
+    return fk.render_template("user.html", person=person, person_icon=person['icon'],person_made=user_created)
 
 
 # Renders subreddit,formats subs with commas, 404 if invalid name
@@ -179,4 +176,4 @@ def internal_server_error(e):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=7150, debug=True)
+    app.run(host='0.0.0.0', port=7150)

@@ -56,8 +56,12 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
 ### Plans
 - Use **INFO** api method for calls
   - [praw.Reddit.info](https://praw.readthedocs.io/en/stable/code_overview/reddit_instance.html#praw.Reddit.info)
+- Add possible SQL Alchemy DB for posts
+  - [SQL Alchemy](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/)
 - Add testing suite for app
   - [flask_tests](https://flask.palletsprojects.com/en/3.0.x/testing/#identifying-tests)   
+- Profile application for speed improvements
+  - time.time, flask_profiler
 - Speed up rendering / fetching time or use async
 - Render a loading page (json fetching?) until content is done loading
 - Simplify data pipeline

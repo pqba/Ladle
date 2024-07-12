@@ -9,8 +9,7 @@ import nh3
 
 # Bot Name: u/theLadled
 def load_ladle() -> praw.Reddit:
-    reddit = praw.Reddit("LadleBot")
-    return reddit
+    return praw.Reddit("LadleBot")
 
 
 def setup_ladle(client_id: str, client_secret: str, pw: str, u_agent: str, uname: str) -> praw.Reddit:
@@ -24,38 +23,22 @@ def setup_ladle(client_id: str, client_secret: str, pw: str, u_agent: str, uname
     return reddit
 
 
-def quick_load(amount: int, selected_subs=None) -> list:
+def info_load(amount=100, selected_subs=None) -> list:
     if selected_subs is None:
-        selected_subs = []
-    if selected_subs is None:
-        selected_subs = []
-    if amount < 0 or amount > 100:
-        amount = 25  # Default Cutoff
-    reddit = load_ladle()
-    posts = []
-    # https://praw.readthedocs.io/en/stable/code_overview/reddit_instance.html#praw.Reddit.info
-    return posts
-
-
-def load_posts(amount=100, selected_subs=None) -> list:
-    if selected_subs is None:
-        selected_subs = []
+        selected_subs = ["popular"]
     if amount < 0 or amount > 100:
         amount = 50  # Default Cutoff
     reddit = load_ladle()
 
-    sub_list = selected_subs
-
     search = ""
-    for sub in sub_list[:-1]:
+    for sub in selected_subs[:-1]:
         search += sub + "+"
-    search += sub_list[-1]
+    search += selected_subs[-1]
 
     post_ids = []
     for submission in reddit.subreddit(search).hot(limit=amount):
-        post_ids.append(submission.fullname)
+        post_ids.append(submission.fullname)  # Collect fullnames of the posts
 
-    # reddit.info generates info in batches of 100
     posts = []
     for submission in reddit.info(fullnames=post_ids):
         try:
@@ -64,13 +47,36 @@ def load_posts(amount=100, selected_subs=None) -> list:
                     submission.url, submission.num_comments, submission.id)
             posts.append(info)
         except Exception as e:
-            print(e)
+            print(f"Error {e}")
     ordered = sort_posts(posts, True)
     return ordered
 
 
-def sort_posts(content: list, inReverse: bool) -> list:
-    return sorted(content, key=lambda x: x[2] * x[3], reverse=inReverse)
+def load_posts(amount=100, selected_subs=None) -> list:
+    if selected_subs is None:
+        selected_subs = ["popular"]
+    if amount < 0 or amount > 100:
+        amount = 50  # Default Cutoff
+    reddit = load_ladle()
+
+    search = ""
+    for sub in selected_subs[:-1]:
+        search += sub + "+"
+    search += selected_subs[-1]
+
+    posts = []
+    for submission in reddit.subreddit(search).hot(limit=amount):
+        info = (f"r/{str(submission.subreddit.display_name).lower()}",
+                f"{submission.title}", int(float(submission.upvote_ratio) * 100), submission.score,
+                submission.url, submission.num_comments, submission.id)
+        posts.append(info)
+
+    ordered = sort_posts(posts, True)
+    return ordered
+
+
+def sort_posts(content: list, asc: bool) -> list:
+    return sorted(content, key=lambda x: x[2] * x[3], reverse=asc)
 
 
 def user_info(user_name: str) -> dict:
@@ -144,7 +150,6 @@ def post_info(post_id: str) -> dict:
     # Comments
     post_data['nc'] = post_model.num_comments
     # post_data['comments'] = get_comment_list()
-
     return post_data
 
 
@@ -154,10 +159,13 @@ def mark_seen(post_id: str) -> None:
         post_model = load_ladle().submission(post_id)
         post_model.hide()
 
-def mark_unseen(post_id:str) -> None:
+
+def mark_unseen(post_id: str) -> None:
     if post_exists(post_id):
         post_model = load_ladle().submission(post_id)
         post_model.unhide()
+
+
 # FROM: https://www.reddit.com/r/redditdev/comments/68dhpm/praw_best_way_to_check_if_subreddit_exists_from/
 def sub_exists(subname: str) -> bool:
     try:
