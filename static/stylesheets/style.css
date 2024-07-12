@@ -1,4 +1,7 @@
-:root {
+:root,[data-theme="light"] {
+  --fg-color: black;
+  --bg-color: white;
+
   --pastel-yellow: #f3d250;
   --pastel-pink: #f4a8ae;
   --pastel-blue: #a4c2f4;
@@ -6,15 +9,75 @@
   --pastel-orange: #fcab85;
   --pastel-purple: #d9b3e2;
   --pastel-red: #f45d55;
+
+   --nav-bg: #eee;
+   --post-linkfg: #333;
 }
 
+[data-theme="dark"] {
+    --fg-color: white;
+    --bg-color: black;
+
+    --pastel-yellow: #d2ae1d;
+    --pastel-pink: #e1969c;
+    --pastel-blue: #295aac;
+    --pastel-green: #1bbb8al;
+    --pastel-orange: #e87139;
+    --pastel-purple: #9e52b0;
+    --pastel-red: #ca3c35;
+
+    --nav-bg: #313030;
+    --post-linkfg: white;
+}
+
+[data-theme="light"] .github-icon {
+    background-image: url('/static/images/github_icon-light.png');
+    height:32px;
+    width:32px;
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+
+[data-theme="dark"] .github-icon {
+    background-image: url('/static/images/github_icon-dark.png');
+    height:32px;
+    width:32px;
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+
+[data-theme="light"] .theme-icon {
+    height:16px;
+    width:16px;
+    background-image: url('/static/images/icon-light.png'); /* Sun */
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+
+[data-theme="dark"] .theme-icon {
+    height:16px;
+    width:16px;
+    background-image: url('/static/images/icon-dark.png'); /* Moon */
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+.theme-icon {
+ background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+ }
+body,html {
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+}
 /* Pastel color highlighting */
+
 .highlight-yellow {
   background-color: var(--pastel-yellow);
   padding: 2px 4px;
-  /*Size of the highlighting*/
   display: inline;
-  /* Display the span as inline */
 }
 
 .highlight-pink {
@@ -81,17 +144,12 @@
 
 .post-link:active,
 .post-link:focus {
-  color: lightgray;
+  color: var(--post-fg);
 }
 
 #selected-post {
   margin-top: 10px;
   list-style-type: none;
-}
-
-.github-img {
-  width: 32px;
-  height: 32px;
 }
 
 #curated-header {
@@ -139,7 +197,7 @@
 /*Nav Styling*/
 
 #navigator {
-  background-color: #eee;
+  background-color: var(--nav-bg);
   padding: 10px;
   margin: 0px;
   display: flex;
@@ -209,7 +267,7 @@
   margin: 10px;
   padding: 10px;
   text-align: center;
-  color: #333;
+  color: var(--post-linkfg);
 
 }
 

@@ -24,7 +24,9 @@ def setup_ladle(client_id: str, client_secret: str, pw: str, u_agent: str, uname
     return reddit
 
 
-def quick_load(amount : int, selected_subs=[]) -> list:
+def quick_load(amount: int, selected_subs=None) -> list:
+    if selected_subs is None:
+        selected_subs = []
     if selected_subs is None:
         selected_subs = []
     if amount < 0 or amount > 100:
@@ -34,11 +36,12 @@ def quick_load(amount : int, selected_subs=[]) -> list:
     # https://praw.readthedocs.io/en/stable/code_overview/reddit_instance.html#praw.Reddit.info
     return posts
 
-def load_posts(amount: int, selected_subs=[]) -> list:
+
+def load_posts(amount=100, selected_subs=None) -> list:
     if selected_subs is None:
         selected_subs = []
     if amount < 0 or amount > 100:
-        amount = 25  # Default Cutoff
+        amount = 50  # Default Cutoff
     reddit = load_ladle()
 
     sub_list = selected_subs
@@ -47,13 +50,21 @@ def load_posts(amount: int, selected_subs=[]) -> list:
     for sub in sub_list[:-1]:
         search += sub + "+"
     search += sub_list[-1]
-    posts = []
-    for submission in reddit.subreddit(search).hot(limit=amount):
-        info = (f"r/{str(submission.subreddit.display_name).lower()}",
-                f"{submission.title}", int(float(submission.upvote_ratio) * 100), submission.score,
-                submission.url, submission.num_comments, submission.id)
-        posts.append(info)
 
+    post_ids = []
+    for submission in reddit.subreddit(search).hot(limit=amount):
+        post_ids.append(submission.fullname)
+
+    # reddit.info generates info in batches of 100
+    posts = []
+    for submission in reddit.info(fullnames=post_ids):
+        try:
+            info = (f"r/{str(submission.subreddit.display_name).lower()}",
+                    f"{submission.title}", int(float(submission.upvote_ratio) * 100), submission.score,
+                    submission.url, submission.num_comments, submission.id)
+            posts.append(info)
+        except Exception as e:
+            print(e)
     ordered = sort_posts(posts, True)
     return ordered
 
@@ -139,12 +150,14 @@ def post_info(post_id: str) -> dict:
 
 # Mark string converted post as seen by hiding it
 def mark_seen(post_id: str) -> None:
-    if not post_exists(post_id):
-        return
-    post_model = load_ladle().submission(post_id)
-    post_model.hide()
+    if post_exists(post_id):
+        post_model = load_ladle().submission(post_id)
+        post_model.hide()
 
-
+def mark_unseen(post_id:str) -> None:
+    if post_exists(post_id):
+        post_model = load_ladle().submission(post_id)
+        post_model.unhide()
 # FROM: https://www.reddit.com/r/redditdev/comments/68dhpm/praw_best_way_to_check_if_subreddit_exists_from/
 def sub_exists(subname: str) -> bool:
     try:
@@ -176,7 +189,7 @@ def clean(client_input: str) -> str:
     return nh3.clean(client_input)
 
 
-def get_comment_list(post,lim=None):
+def get_comment_list(post, lim=None):
     post.comments.replace_more(limit=lim)
     for comment in post.comments.list():
         print(comment.body)
@@ -189,7 +202,7 @@ def get_top_level_comments(post):
 
 
 # TODO: finish building comment tree using parent child relationship, allow for expansion as well
-def build_comment_tree(comment:praw.models.comment_forest.CommentForest,depth:int):
+def build_comment_tree(comment: praw.models.comment_forest.CommentForest, depth: int):
     pass
 
 

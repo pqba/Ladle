@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="">
 
 <head>
   <meta charset='utf-8'>
@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap" rel="stylesheet">
+  <script type="text/javascript" src="{{url_for('static', filename='theme.js')}}" crossorigin="anonymous" referrerpolicy="same-origin" defer></script>
 </head>
 
 <body class="reddit-mono-basic">
@@ -16,9 +17,9 @@
     <a href="/">Home</a>
     <a href="/subreddit_list">Curate List</a>
     <a href="/about">About</a>
+    <button class="theme-icon" id="theme-toggle"></button>
   </div>
   {% block body %}
   {% endblock %}
 </body>
-
 </html>

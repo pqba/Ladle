@@ -44,10 +44,11 @@ def root():
         fk.session["content"] = sublist
     current_date = str(datetime.date.today())
 
-    loaded_posts = stew_bot.load_posts(10, fk.session["content"])
-    remember_posts(loaded_posts)
+    loaded_posts = stew_bot.load_posts(50, fk.session["content"])[:10]
+    remember_post_id(loaded_posts)
 
     return fk.render_template("home.html", date=current_date, loadedPosts=loaded_posts)
+
 
 # Renders sub_form and gets inputted values, clears cache
 @app.route('/subreddit_list', methods=["GET", "POST"])
@@ -77,6 +78,7 @@ def get_subs():
 def about():
     return fk.render_template("about.html")
 
+
 # Renders 10 more posts on home page, hiding old content and storing new content
 @app.route("/more-posts", methods=["GET", "POST"])
 def additional_posts():
@@ -86,21 +88,24 @@ def additional_posts():
         stew_bot.mark_seen(submission_str)
 
     new_content = stew_bot.load_posts(10, fk.session["content"])
-    remember_posts(new_content)
+    remember_post_id(new_content)
     current_date = str(datetime.date.today())
     return fk.render_template("home.html", date=current_date, loadedPosts=new_content)
 
+
 # Renders post given ID, 404 if invalid
-@app.route("/post/<id>", methods=["GET"])
+@app.route("/post/<p_id>", methods=["GET"])
 @cache.memoize(timeout=LONG_TIMEOUT)
-def get_post(id):
-    info = stew_bot.post_info(id)
+def get_post(p_id):
+    info = stew_bot.post_info(p_id)
     if info is None:
-        e = stew_bot.clean(f"Post doesn't exist or Ladle cannot find post id: {id}.")
+        e = stew_bot.clean(f"Post doesn't exist or Ladle cannot find post id: {p_id}.")
         return page_not_found(e)
     post_created = to_ymd(info['utc'])
     md_text = markdown(info['text'])
-    return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'],p_text=md_text)
+    return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'],
+                              p_text=md_text)
+
 
 # Renders user info page
 @app.route("/user/<name>", methods=["GET"])
@@ -112,6 +117,7 @@ def get_user(name):
         return page_not_found(e)
     user_created = to_ymd(person['utc'])
     return fk.render_template("user.html", person=person, person_icon=person['icon'])
+
 
 # Renders subreddit,formats subs with commas, 404 if invalid name
 @app.route("/subreddit/<sub_name>")
@@ -137,21 +143,23 @@ def subreddit_about(sub_name: str):
     print(f"PARSED JSON DATA FOR r/{sub_name}: {parsed}")
     return parsed
 
+
 # Converts UTC timestamp to YMD format
-def to_ymd(utc: str) -> str:
+def to_ymd(utc: float) -> str:
     date_time = datetime.datetime.fromtimestamp(utc)
     when = date_time.strftime('%Y-%m-%d')
     return when
 
+
 # Stores post list in session variable
-def remember_posts(reddit_posts: list) -> None:
+def remember_post_id(reddit_posts: list) -> None:
     post_list = [str(p[-1]) for p in reddit_posts]
     fk.session["posts"] = post_list
 
 
 # Make sure list of subs is valid and > 1
-def valid_subs(sublist: list[str]) -> bool:
-    for subreddit in sublist:
+def valid_subs(sub_list: list[str]) -> bool:
+    for subreddit in sub_list:
         if not subreddit or subreddit == "":
             return False
         if not stew_bot.sub_exists(subreddit):
@@ -163,10 +171,11 @@ def valid_subs(sublist: list[str]) -> bool:
 def page_not_found(e=""):
     return fk.render_template('404.html', error=e), 404
 
+
 @app.errorhandler(500)
 def internal_server_error(e):
     # note that we set the 500 status explicitly
-    return fk.render_template('500.html',error=e), 500
+    return fk.render_template('500.html', error=e), 500
 
 
 if __name__ == "__main__":
