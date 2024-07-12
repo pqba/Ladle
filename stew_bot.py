@@ -66,7 +66,7 @@ def load_posts(amount=100, selected_subs=None) -> list:
 
     posts = []
     for submission in reddit.subreddit(search).hot(limit=amount):
-        info = (f"r/{str(submission.subreddit.display_name).lower()}",
+        info = (f"r/{str(submission.subreddit).lower()}",
                 f"{submission.title}", int(float(submission.upvote_ratio) * 100), submission.score,
                 submission.url, submission.num_comments, submission.id)
         posts.append(info)
@@ -83,17 +83,15 @@ def user_info(user_name: str) -> dict:
     user_name = user_name.lower()  # Reddit has lowercase user data
     if not user_exists(username=user_name):
         return None
-    person_data = {}
     user_model = load_ladle().redditor(user_name)
-
-    person_data['who'] = user_name
-    person_data['id'] = user_model.id
-
-    person_data['utc'] = user_model.created_utc
-    person_data['c_karma'] = user_model.comment_karma
-    person_data['l_karma'] = user_model.link_karma
-    person_data['icon'] = user_model.icon_img
-
+    person_data = {
+        'who': user_name,
+        'id': user_model.id,
+        'utc': user_model.created_utc,
+        'c_karma': user_model.comment_karma,
+        'l_karma': user_model.link_karma,
+        'icon': user_model.icon_img
+    }
     # TODO: finish User content
     # recent_comments = user_model.comments.new(limit=5)
     # parsed_comments = [c.body for c in recent_comments]
@@ -107,49 +105,43 @@ def subreddit_info(sub_name: str) -> dict:
     sub_name = sub_name.lower()
     if not sub_exists(sub_name):
         return None
-    sub_data = {}
-    sub_model = load_ladle().subreddit(sub_name)
 
-    sub_data['id'] = sub_model.id
-    sub_data['name'] = sub_name
-    sub_data['desc'] = sub_model.public_description
-    sub_data['utc'] = sub_model.created_utc
-    sub_data['subs'] = sub_model.subscribers
-    sub_data['nsfw'] = sub_model.over18
+    sub_model = load_ladle().subreddit(sub_name)
+    sub_data = {
+        'id': sub_model.id,
+        'name': sub_name,
+        'desc': sub_model.public_description,
+        'utc': sub_model.created_utc,
+        'subs': sub_model.subscribers,
+        'nsfw': sub_model.over18
+    }
+
     return sub_data
 
 
 def post_info(post_id: str) -> dict:
     if not post_exists(post_id):
         return None
-    post_data = {}
+
     post_model = load_ladle().submission(post_id)
 
-    # Post info
-    post_data['id'] = post_id
-    post_data['url'] = post_model.url
-    post_data['title'] = post_model.title
-    post_data['text'] = post_model.selftext  # Markdown format
-
-    # Popularity
-    post_data['score'] = post_model.score
-    post_data['ratio'] = int(float(post_model.upvote_ratio) * 100)
-
-    # Author
-    author = post_model.author
-    post_data['who'] = author.name
-    post_data['by-icon'] = author.icon_img
-
-    # Metadata
-    post_data['nsfw'] = post_model.over_18
-    post_data['sub'] = post_model.subreddit
-    post_data['utc'] = post_model.created_utc
-    post_data['flair'] = post_model.link_flair_text
-    post_data['lock'] = post_model.locked
-
-    # Comments
-    post_data['nc'] = post_model.num_comments
-    # post_data['comments'] = get_comment_list()
+    post_data = {
+        'id': post_id,
+        'url': post_model.url,
+        'title': post_model.title,
+        'text': post_model.selftext,  # Markdown format
+        'score': post_model.score,
+        'ratio': int(float(post_model.upvote_ratio) * 100),
+        'who': post_model.author.name,
+        'by-icon': post_model.author.icon_img,
+        'nsfw': post_model.over_18,
+        'sub': post_model.subreddit,
+        'utc': post_model.created_utc,
+        'flair': post_model.link_flair_text,
+        'lock': post_model.locked,
+        'nc': post_model.num_comments
+        # 'comments' : get_comment_list()
+    }
     return post_data
 
 
@@ -167,9 +159,9 @@ def mark_unseen(post_id: str) -> None:
 
 
 # FROM: https://www.reddit.com/r/redditdev/comments/68dhpm/praw_best_way_to_check_if_subreddit_exists_from/
-def sub_exists(subname: str) -> bool:
+def sub_exists(sub_name: str) -> bool:
     try:
-        load_ladle().subreddits.search_by_name(subname, exact=True)
+        load_ladle().subreddits.search_by_name(sub_name, exact=True)
     except NotFound:
         return False
     return True
