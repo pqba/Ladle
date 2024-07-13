@@ -10,25 +10,29 @@
             {% endif %}
         </h2>
     </a>
+    {% if info.flair is not none %}
+    <div class="post-flair"><p class="highlight-pink smaller-text">{{info.flair}}</p></div>
+    {% endif %}
     <div class="post-meta">
-        <h3>r/{{info.sub}}</h3>
+        <h3><a class="post-link" href="/subreddit/{{info.sub}}">r/{{info.sub}}</a></h3>
         <div>
             <p class="smaller-text highlight-blue"><a class="post-link" href="/user/{{ info.who }}">u/{{info.who}}</a>
             </p>
         </div>
         <p class="smaller-text">On {{p_date}}</p>
-        <img src="{{ u_icon }}" alt="User PFP" height="64px" />
-        <!--TODO: fix default PFP being blocked by CORS-->
-
+        <img class="user-pfp" src="{{ u_icon }}" alt="User PFP"/>
     </div>
     <div class="post-content">
         {% if info.lock == true %}
         <img src="/static/images/lock.svg" height="24px" />
         {% endif %}
         <div class="post-text">{{ p_text | safe }}</div>
+        {% if img_post == true %}
+        <div class="content-center spacer"><img src="{{ p_url }}"  class="post-image" crossorigin="anonymous" referrerpolicy="no-referrer"/></div>
+        {% endif %}
     </div>
     <div class="post-stats">
-        <p> <img src="/static/images/up-arrow.svg" height="15px"> {{info.score}} [{{info.ratio}}%] | {{info.nc}}
+        <p> <img src="/static/images/up-arrow.svg" class="upvote-img"> {{info.score}} [{{info.ratio}}%] | {{info.nc}}
             comments</p>
     </div>
     <div class="post-comments">

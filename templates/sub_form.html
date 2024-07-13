@@ -1,57 +1,58 @@
 {% extends 'base.html' %}
-
 {% block title %} Ladle Form {% endblock %}
-
 {% block body %}
-<div id="top">
-    <h1>Ladle Subreddit List</h1>
-    <p class="highlight-orange"><span>Specify which subreddits you wish to view with this form.</span></p>
+<div class="content-center">
+   <h1>Ladle Subreddit List</h1>
+   <p class="highlight-orange"><span>Specify which subreddits you wish to view with this form.</span></p>
 </div>
-<div>
-    <h3 class="highlight-blue">Use Curated Lists</h3>
-</div>
-
-<div>
-    <button type="submit" class="curated-button"
-        title="[r/]math,machinelearning,computerscience, calculus, and askmath">CS+Math</button>
-    <button type="submit" class="curated-button"
-        title="[r/]piano,audiophile,guitar,musictheory, wearethemusicmakers">Music</button>
-    <button type="submit" class="curated-button" title="[r/]art,design,diy,painting,photography">Art</button>
-    <button type="submit" class="curated-button"
-        title="[r/]fitness,yoga,nutrition,weightlifting,meditation">Health</button>
-    <button type="submit" class="curated-button" title="[r/]sports,nba,soccer,nfl,mls">Sports</button>
-</div>
-<div>
-    <h3 class="highlight-green">Specify Your Own</h3>
-</div>
-
-<div class="subreddit-form twenty-margin">
-    <form method="POST" action="/subreddit_list">
-        <p class="error-message">{{ err }}</p>
-        <div class="input-group">
-            <label for="sub_1">First Subreddit:&nbsp;</label>
-            <input type="text" id="sub_1" name="sub_1" autocomplete="off" required>
-        </div>
-        <div class="input-group">
-            <label for="sub_2">Second Subreddit:</label>
-            <input type="text" id="sub_2" name="sub_2" autocomplete="off" required>
-        </div>
-        <div class="input-group">
-            <label for="sub_3">Third Subreddit:&nbsp;</label>
-            <input type="text" id="sub_3" name="sub_3" autocomplete="off" required>
-        </div>
-        <div class="input-group">
-            <label for="sub_4">Fourth Subreddit:</label>
-            <input type="text" id="sub_4" name="sub_4" autocomplete="off" required>
-        </div>
-        <div class="input-group">
-            <label for="sub_5">Fifth Subreddit:&nbsp;</label>
-            <input type="text" id="sub_5" name="sub_5" autocomplete="off" required>
-        </div>
-        <div class="submission-btn">
-            <button type="submit" class="curated-button">Submit</button>
-        </div>
+<div class="subreddit-button">
+    <form method="POST" action="/subreddit_button">
+         <div class="double-spacer">
+         <h3 class="highlight-blue">Use Curated Lists</h3>
+      </div>
+       <p class="error-message">{{ err_btns }}</p>
+      <div>
+         <button type="submit" class="curated-button bg-purple"
+            title="[r/]math,machinelearning,computerscience,calculus,askmath" name="btn_sub" value="cs+math">CS+Math</button>
+         <button type="submit" class="curated-button bg-red"
+            title="[r/]piano,audiophile,guitar,musictheory,wearethemusicmakers" name="btn_sub" value="music">Music</button>
+         <button type="submit" class="curated-button bg-orange" title="[r/]art,design,diy,painting,photography" name="btn_sub" value="arts">Art</button>
+         <button type="submit" class="curated-button bg-pink"
+            title="[r/]fitness,yoga,nutrition,weightlifting,meditation" name="btn_sub" value="health">Health</button>
+         <button type="submit" class="curated-button bg-blue" title="[r/]sports,nba,soccer,nfl,mls" name="btn_sub" value="sports">Sports</button>
+      </div>
     </form>
-    <p class="smaller-text"><b>Note:</b> enter '.' in a field to browse less than 5 subs.</p>
+</div>
+<div class="subreddit-form medium-margin">
+   <form method="POST" action="/subreddit_list">
+      <p class="error-message">{{ err_choose }}</p>
+      <div class="double-spacer">
+         <h3 class="highlight-green">Specify Your Own</h3>
+      </div>
+      <div class="input-group">
+         <label for="sub_1">First Subreddit:&nbsp;</label>
+         <input type="text" id="sub_1" name="sub_1" autocomplete="off" required>
+      </div>
+      <div class="input-group">
+         <label for="sub_2">Second Subreddit:</label>
+         <input type="text" id="sub_2" name="sub_2" autocomplete="off" required>
+      </div>
+      <div class="input-group">
+         <label for="sub_3">Third Subreddit:&nbsp;</label>
+         <input type="text" id="sub_3" name="sub_3" autocomplete="off" required>
+      </div>
+      <div class="input-group">
+         <label for="sub_4">Fourth Subreddit:</label>
+         <input type="text" id="sub_4" name="sub_4" autocomplete="off" required>
+      </div>
+      <div class="input-group">
+         <label for="sub_5">Fifth Subreddit:&nbsp;</label>
+         <input type="text" id="sub_5" name="sub_5" autocomplete="off" required>
+      </div>
+      <div class="content-center">
+         <button type="submit" class="curated-button">Submit</button>
+      </div>
+   </form>
+   <p class="smaller-text"><b>Note:</b> enter '.' in a field to browse less than 5 subs.</p>
 </div>
 {% endblock %}

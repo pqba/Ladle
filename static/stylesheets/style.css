@@ -32,31 +32,31 @@
 
 [data-theme="light"] .github-icon {
     background-image: url('/static/images/github_icon-light.png');
-    height:32px;
-    width:32px;
+    height:2em;
+    width:2em;
     background-repeat:no-repeat;
     background-size:contain;
 }
 
 [data-theme="dark"] .github-icon {
     background-image: url('/static/images/github_icon-dark.png');
-    height:32px;
-    width:32px;
+    height:2em;
+    width:2em;
     background-repeat:no-repeat;
     background-size:contain;
 }
 
 [data-theme="light"] .theme-icon {
-    height:16px;
-    width:16px;
+    height:1em;
+    width:1em;
     background-image: url('/static/images/icon-light.png'); /* Sun */
     background-repeat:no-repeat;
     background-size:contain;
 }
 
 [data-theme="dark"] .theme-icon {
-    height:16px;
-    width:16px;
+    height:1em;
+    width:1em;
     background-image: url('/static/images/icon-dark.png'); /* Moon */
     background-repeat:no-repeat;
     background-size:contain;
@@ -76,44 +76,65 @@ body,html {
 
 .highlight-yellow {
   background-color: var(--pastel-yellow);
-  padding: 2px 4px;
+  padding: .3em .3em;
   display: inline;
 }
 
 .highlight-pink {
   background-color: var(--pastel-pink);
-  padding: 2px 4px;
+  padding: .3em .3em;
   display: inline;
 }
 
 .highlight-blue {
   background-color: var(--pastel-blue);
-  padding: 2px 4px;
+  padding: .3em .3em;
   display: inline;
 }
 
 .highlight-green {
   background-color: var(--pastel-green);
-  padding: 2px 4px;
+  padding: .3em .3em;;
   display: inline;
 }
 
 .highlight-orange {
   background-color: var(--pastel-orange);
-  padding: 2px 4px;
+  padding: .3em .3em;
   display: inline;
 }
 
 .highlight-purple {
   background-color: var(--pastel-purple);
-  padding: 2px 4px;
+  padding: .3em .3em;
   display: inline;
 }
 
 .highlight-red {
   background-color: var(--pastel-red);
-  padding: 2px 4px;
+  padding: .3em .3em;
   display: inline;
+}
+.bg-yellow {
+background-color: var(--pastel-yellow);
+}
+.bg-pink {
+background-color: var(--pastel-pink);
+}
+.bg-blue {
+background-color: var(--pastel-blue);
+}
+.bg-green {
+background-color: var(--pastel-green);
+}
+.bg-orange {
+background-color: var(--pastel-orange);
+}
+.bg-purple {
+background-color: var(--pastel-purple);
+}
+.bg-red {
+background-color: var(--pastel-red);
 }
 
 /*Simple Font Rule*/
@@ -124,13 +145,10 @@ body,html {
   font-style: normal;
 }
 
-#top {
-  text-align: center;
-}
 
 .post-link p {
   text-align: left;
-  margin-top:6px;
+  margin-top:0;
 }
 
 .post-link {
@@ -148,14 +166,14 @@ body,html {
 }
 
 #selected-post {
-  margin-top: 10px;
+  margin-top: .5em;
   list-style-type: none;
 }
 
 #curated-header {
-  font-size: 25px;
-  margin-left: 2px;
-  margin-bottom: 5px;
+  font-size: 140%;
+  margin-left: .1em;
+  margin-bottom: .2em;
 }
 
 #selected-post {}
@@ -166,16 +184,20 @@ body,html {
 }
 
 #foot p {
-  padding-right: 10px;
+  padding-right: 1em;
   /*Space btwn para and link*/
 }
 
-#spacer {
-  margin-bottom: 30px;
+.spacer {
+  margin-bottom: 2em;
+}
+.double-spacer {
+    margin-bottom:2em;
+    margin-top:2em;
 }
 
-.twenty-margin {
-  margin: 20px;
+.medium-margin {
+  margin: 1.5em;
 }
 
 #go-home a {
@@ -191,15 +213,15 @@ body,html {
 
 .issue {
   font-style: italic;
-  padding-right: 10px;
+  padding-right: 1em;
 }
 
 /*Nav Styling*/
 
 #navigator {
   background-color: var(--nav-bg);
-  padding: 10px;
-  margin: 0px;
+  padding: .75em;
+  margin: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -208,7 +230,7 @@ body,html {
 #navigator a {
   color: #333;
   text-decoration: none;
-  padding: 10px;
+  padding: .6em;
 }
 
 #navigator a:hover {
@@ -250,22 +272,19 @@ body,html {
   margin-right: 0.5rem;
   cursor: pointer;
   font-family: "Reddit Mono", monospace;
-  background-color: lightgray;
-  border-radius: 8px;
+  border-radius: .8em;
+  color: black;
 }
 
 .curated-button:hover {
-  background-color: #ddd;
+  background-color: var(--fg-color);
   /* Slightly darker background */
 }
 
-.submission-btn {
-  text-align: center;
-}
 
 .post-link {
-  margin: 10px;
-  padding: 10px;
+  margin: .7em;
+  padding: .7em;
   text-align: center;
   color: var(--post-linkfg);
 
@@ -282,8 +301,12 @@ body,html {
   color: inherit;
 }
 
+.post-container .post-link {
+    margin:0;
+    padding:0;
+}
 .post-text {
-  font-size: .75em;
+  font-size: 90%;
   text-decoration: none;
   padding: 1em;
 }
@@ -295,7 +318,25 @@ body,html {
 .post-link a:hover {
   background-color: var(--pastel-blue);
 }
-
+.post-flair {
+    font-style:italic;
+    text-align:center;
+}
+.post-image {
+    max-width:30em;
+    max-height:30em;
+}
+.user-pfp {
+    height:5em;
+    border-radius:1em;
+}
 .smaller-text {
-  font-size: .8em;
+  font-size: 80%;
+}
+.upvote-img {
+    height:1em;
+}
+.content-center {
+    text-align:center;
+    align-content:center;
 }

@@ -8,6 +8,7 @@ from os import environ
 import requests
 import json
 from markdown import markdown
+
 load_dotenv()
 
 app = fk.Flask(__name__, static_folder="static", template_folder="templates")
@@ -65,9 +66,22 @@ def get_subs():
             return fk.redirect("/")
         else:
             err_msg = "Please choose a valid subreddit configuration or enter valid subreddit(s) in the form."
-            return fk.render_template("sub_form.html", err=err_msg)
+            return fk.render_template("sub_form.html", err_choose=err_msg, err_btns="")
     else:
-        return fk.render_template("sub_form.html", err="")
+        return fk.render_template("sub_form.html", err_choose="", err_btns="")
+
+
+# Renders homepage after button selected and clears cache, error if invalid
+@app.route("/subreddit_button", methods=["POST"])
+def get_sub_btn():
+    selection = fk.request.form["btn_sub"]
+    if not valid_sub_btn(selection):
+        return fk.render_template("sub_form.html", err_choose="",
+                                  err_btns="Invalid button choice. Choose a preset configuration from the buttons "
+                                           "below.")
+    cache.clear()
+    fk.session["content"] = sub_profiles[selection]
+    return fk.redirect("/")
 
 
 @app.route("/about", methods=["GET"])
@@ -100,11 +114,12 @@ def get_post(p_id):
         return page_not_found(e)
     post_created = to_ymd(info['utc'])
     md_text = markdown(info['text'])
+    img_post = info['url'][8] == 'i'  # 'https://i'  is how image posts are formatted
     return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'],
-                              p_text=md_text)
+                              p_text=md_text, img_post=img_post)
 
 
-# Renders user info page
+# Renders user info page, 404 if deleted or invalid
 @app.route("/user/<name>", methods=["GET"])
 @cache.memoize(timeout=SHORT_TIMEOUT)
 def get_user(name):
@@ -113,7 +128,7 @@ def get_user(name):
         e = stew_bot.clean(f"User doesn't exist or Ladle cannot find u/{name}.")
         return page_not_found(e)
     user_created = to_ymd(person['utc'])
-    return fk.render_template("user.html", person=person, person_icon=person['icon'],person_made=user_created)
+    return fk.render_template("user.html", person=person, person_icon=person['icon'], person_made=user_created)
 
 
 # Renders subreddit,formats subs with commas, 404 if invalid name
@@ -126,19 +141,39 @@ def get_sub(sub_name):
         return page_not_found(e)
     sub_created = to_ymd(sub['utc'])
     sub['subs'] = f"{sub['subs']:,}"  # Comma separated
-    # TODO: parse more from about.json 
-    # about = subreddit_about(sub_name)
+    # TODO: render loaded data
+    #  sub_extra = subreddit_info(sub_name)
+    sub_extra = {}
     return fk.render_template("subreddit.html", subreddit=sub, subreddit_created=sub_created, subreddit_bg="",
-                              subreddit_icon="")
+                              subreddit_icon="",subreddit_extra=sub_extra)
 
 
-def subreddit_about(sub_name: str):
+# Returns icon, banner, active users, and category of sub
+def subreddit_info(sub_name: str):
     url = f"https://www.reddit.com/r/{sub_name}/about.json"
-    # Getting  -> {'message': 'Too Many Requests', 'error': 429}
     req = requests.get(url)
-    parsed = json.loads(req.text)
-    print(f"PARSED JSON DATA FOR r/{sub_name}: {parsed}")
-    return parsed
+
+    parsed = json.loads(req.text)["data"]
+    if 'error' in parsed:  # For: {'message': 'Too Many Requests', 'error': 429}
+        return None
+
+    # print(json.dumps(parsed, indent=4))
+
+    sub_info = {
+        'subtitle': parsed['title'],
+        'header_title': parsed['header_title'],
+        'active': parsed['accounts_active'],
+        'category': parsed['advertiser_category'],
+        'lang': parsed['lang'],
+        # Icons/banners are in 2 different styles, removing possible '?' fixes image links.
+        'icon': parsed['icon_img'].split("?")[0],
+        'bannerA': parsed['banner_img'].split("?")[0],
+        'bannerB': parsed['banner_background_image'].split("?")[0]
+    }
+    print(f"PARSED JSON DATA FOR r/{sub_name}:\n{sub_info}\n")
+    # Other interesting fields: description(the full long post), submit_text, mobile_banner_image,
+    # quarantine, and header_img
+    return sub_info
 
 
 # Converts UTC timestamp to YMD format
@@ -162,6 +197,11 @@ def valid_subs(sub_list: list[str]) -> bool:
         if not stew_bot.sub_exists(subreddit):
             return False
     return True
+
+
+# Ensure button name is a valid configuration
+def valid_sub_btn(btn_name: str) -> bool:
+    return btn_name in sub_profiles.keys()
 
 
 @app.errorhandler(404)

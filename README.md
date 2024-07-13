@@ -54,6 +54,7 @@ flask --app app run
 Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.com/wiki/api/) 
 
 ### Plans
+- Use `about.json` for subreddits to render information
 - Use **INFO** api method for calls
   - [praw.Reddit.info](https://praw.readthedocs.io/en/stable/code_overview/reddit_instance.html#praw.Reddit.info)
 - Add possible SQL Alchemy DB for posts
@@ -62,13 +63,10 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
   - [flask_tests](https://flask.palletsprojects.com/en/3.0.x/testing/#identifying-tests)   
 - Profile application for speed improvements
   - time.time, flask_profiler
-- Speed up rendering / fetching time or use async
 - Render a loading page (json fetching?) until content is done loading
-- Simplify data pipeline
 - Simple search on user,post, or subreddit page
   * Manage cookies / login or logout of basic profiles
 - Comment tree rendering, load comments
-- Inspect user profiles
 - Take a look at ASYNC loading 
   * [Async Praw](https://asyncpraw.readthedocs.io/en/stable/code_overview/models/submission.html)
 - Add command line job availability or auto-running capabilities

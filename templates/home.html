@@ -3,12 +3,13 @@
 {% block title %}Ladle Home {% endblock %}
 
 {% block body %}
-<div id="top">
+ <script>0</script> <!--https://stackoverflow.com/questions/21147149/flash-of-unstyled-content-fouc-in-firefox-only-is-ff-slow-renderer-->
+<div class="content-center">
   <h1> Ladle Mainframe </h1>
-  <p class="highlight-purple">{{date}} </p> |
+  <p class="highlight-purple">{{date}} </p>&nbsp;|
   <p class="highlight-yellow"><span>Discover curated posts, browse specific subreddit groups, and more!</span></p>
 </div>
-<div id="spacer"></div>
+<div class="spacer"></div>
 <div id="posts">
   <p class="highlight-blue" id="curated-header">Curated Posts</p>
   <ul>
@@ -17,7 +18,7 @@
       <a href="/post/{{post[-1]}}" class="post-link">
         <p><b>{{post[0]}}</b> {{post[1]}} </p>
       </a>
-      <img src="/static/images/up-arrow.svg" height="15px"> {{post[3]}} [{{post[2]}}%] | {{post[5]}} comments
+      <img src="/static/images/up-arrow.svg" class="upvote-img"> {{post[3]}} [{{post[2]}}%] | {{post[5]}} comments
     </li>
     {% endfor %}
     <div class="post-link">
