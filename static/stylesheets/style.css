@@ -46,6 +46,10 @@
     background-size:contain;
 }
 
+a.github-link {
+  margin-top:.5em;
+}
+
 [data-theme="light"] .theme-icon {
     height:1em;
     width:1em;
@@ -175,8 +179,6 @@ background-color: var(--pastel-red);
   margin-left: .1em;
   margin-bottom: .2em;
 }
-
-#selected-post {}
 
 #foot {
   display: flex;
@@ -315,8 +317,8 @@ background-color: var(--pastel-red);
   color: darkblue;
 }
 
-.post-link a:hover {
-  background-color: var(--pastel-blue);
+.additional-posts a:hover {
+  background-color: var(--pastel-green);
 }
 .post-flair {
     font-style:italic;
@@ -330,11 +332,19 @@ background-color: var(--pastel-red);
     height:5em;
     border-radius:1em;
 }
+
+.upvote-img {
+    height:1em;
+}
 .smaller-text {
   font-size: 80%;
 }
-.upvote-img {
-    height:1em;
+.small-left-pad {
+  padding-left: 1em;
+}
+.no-vertical-margin {
+  margin-top:0;
+  margin-bottom:0;
 }
 .content-center {
     text-align:center;

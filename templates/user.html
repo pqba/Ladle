@@ -5,14 +5,31 @@
 <div class="user-container">
     <h2>u/{{person.who}}</h2>
     <img src="{{ person_icon }}" class="user-pfp" />
-    <p class="user-karma highlight-green"> <b>Karma:</b> {{person.l_karma}}  for posts | {{person.c_karma}} for comments </p>
+    <p class="user-karma highlight-green"> <b>Karma:</b> {{person.l_karma}} for posts | {{person.c_karma}} for comments
+    </p>
     <p>Account created <span class="highlight-orange">{{person_made}}</span> </p>
-    <div class="spacer"></div>
-    <div>
-        <h3>Recent Posts</h3>
-        <p>...</p>
+    <div class="double-spacer"></div>
+    <div class="medium-margin">
+        <h3 class="no-vertical-margin">Recent Posts</h3>
+        <ul class="small-left-pad no-vertical-margin">
+            {% for post in person.posts %}
+            <li id="selected-post">
+                <a href="/post/{{ post[0] }}" class="post-link">
+                    <p><b>{{ post[3] }}</b></p>
+                </a>
+                <img src="/static/images/up-arrow.svg" class="upvote-img"> {{ post[1] }} | {{ post[2] }}
+                comments
+            </li>
+            {% endfor %}
+        </ul>
         <h3>Recent Comments</h3>
-        <p>...</p>
+            {% for comment in person.comments %}
+            <div class="smaller-text spacer">
+                <a href="/post/{{ comment[3] }}" class="post-link">{{ comment[1] }}</a>  
+               <img src="/static/images/up-arrow.svg" class="upvote-img"> {{ comment[2] }}
+            </div>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 {% endblock %}

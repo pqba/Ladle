@@ -128,6 +128,10 @@ def get_user(name):
         e = stew_bot.clean(f"User doesn't exist or Ladle cannot find u/{name}.")
         return page_not_found(e)
     user_created = to_ymd(person['utc'])
+    # For now only gather most recent 3 posts. 
+    # TODO: implement pagination
+    person["comments"] = person["comments"][:4]
+    person["posts"] = person["posts"][:4]
     return fk.render_template("user.html", person=person, person_icon=person['icon'], person_made=user_created)
 
 

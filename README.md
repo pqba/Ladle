@@ -54,6 +54,8 @@ flask --app app run
 Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.com/wiki/api/) 
 
 ### Plans
+- **Pagination** for posts on homepage and for recent comments / posts on user
+  - [paginate, stackoverflow](https://stackoverflow.com/questions/33556572/paginate-a-list-of-items-in-python-flask)
 - Use `about.json` for subreddits to render information
 - Use **INFO** api method for calls
   - [praw.Reddit.info](https://praw.readthedocs.io/en/stable/code_overview/reddit_instance.html#praw.Reddit.info)

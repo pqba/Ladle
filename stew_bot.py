@@ -92,12 +92,19 @@ def user_info(user_name: str) -> dict:
         'l_karma': user_model.link_karma,
         'icon': user_model.icon_img
     }
-    # TODO: finish User content
-    # recent_comments = user_model.comments.new(limit=5)
-    # parsed_comments = [c.body for c in recent_comments]
-    # recent_posts = user_model.posts.new(limit=5)
-    # person_data['r_comment'] = parsed_comments
-    # person_data['r_posts'] =  ???
+
+    new_actions = user_model.new() # Sublisting Generator
+    rec_comments = []
+    rec_posts = []
+    for action in new_actions:
+        if isinstance(action,praw.models.reddit.submission.Submission):
+            rec_posts.append([action,action.score,action.num_comments,action.title])
+        elif isinstance(action,praw.models.reddit.comment.Comment):
+            rec_comments.append([action,action.body,action.score,action.link_id.replace("t3_","")])
+        else:
+            continue # Invalid action 
+    person_data['comments'] = rec_comments
+    person_data['posts'] = rec_posts    
     return person_data
 
 

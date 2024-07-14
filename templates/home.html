@@ -12,7 +12,7 @@
 <div class="spacer"></div>
 <div id="posts">
   <p class="highlight-blue" id="curated-header">Curated Posts</p>
-  <ul>
+  <ul class="small-left-pad no-vertical-margin">
     {% for post in loadedPosts %}
     <li id="selected-post">
       <a href="/post/{{post[-1]}}" class="post-link">
@@ -21,11 +21,12 @@
       <img src="/static/images/up-arrow.svg" class="upvote-img"> {{post[3]}} [{{post[2]}}%] | {{post[5]}} comments
     </li>
     {% endfor %}
-    <div class="post-link">
+  </ul>
+    <div class="post-link additional-posts">
       <a href="/more-posts">Additional Posts</a>
     </div>
 
-  </ul>
+
 </div>
 <hr>
 <br>
