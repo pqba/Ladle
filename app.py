@@ -114,9 +114,9 @@ def get_post(p_id):
     full_url = "https://www.reddit.com" + info['link'].rstrip("/")
     post_created = to_ymd(info['utc'])
     md_text = markdown(info['text'])
-    post_article = Article(info['url'])
-    return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'],p_link=full_url,
-                              p_text=md_text, post_article=post_article)
+    post_article = Article(info['url']).display()
+    return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'], p_link=full_url,
+                              p_text=md_text, p_article=post_article)
 
 
 # Renders user info page, 404 if deleted or invalid
@@ -148,7 +148,7 @@ def get_sub(sub_name):
     sub['full_desc'] = markdown(sub['full_desc'])
     sub_extra = stew_bot.subreddit_about(sub_name)
     return fk.render_template("subreddit.html", subreddit=sub, subreddit_created=sub_created, subreddit_bg="",
-                              subreddit_icon="", subreddit_extra=sub_extra)
+                              subreddit_icon="", extra=sub_extra)
 
 
 # Gets input form sub_search form to render results, 404 if invalid

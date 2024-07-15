@@ -3,9 +3,9 @@
 
 {% block body %}
 <div class="subreddit-container">
-    <div class="subreddit-search">
-        <form action="/subreddit/{{ subreddit.name }}/search" method="POST">
-        <input type="text" name="sub_search" class="subreddit-input-search medium-margin smaller-text" placeholder="Query..."/>
+    <div class="subreddit-search-form">
+        <form action="/subreddit/{{ subreddit.name }}/search" method="POST"  autocomplete="off">
+        <input type="text" name="sub_search" class="subreddit-input-search medium-margin smaller-text" placeholder="Query..." required/>
               <button type="submit" class="curated-button smaller-text">Search</button>
         </form>
     </div>
@@ -14,18 +14,23 @@
             <img src="/static/images/warning.svg" height="24px" /> <!--TODO: fix px-->
             {% endif %}
         </h2>
-        {% if 'icon' in subreddit_extra %}
-        <img class="subreddit-icon" src="{{ subreddit_extra.icon }}"/>
+        {% if 'subtitle' in extra and extra.subtitle != "" %}
+        <p class="smaller-text">{{ extra.subtitle }}</p>
         {% endif %}
-        {% if 'category' in subreddit_extra %}
-        <p class="smaller-text highlight-red">Category: {{subreddit_extra.category}}</p>
+        {% if 'icon' in extra and extra.icon != "" %}
+        <img class="subreddit-icon" src="{{ extra.icon }}"/>
+        {% elif 'cm_icon' in extra and extra.cm_icon != "" %}
+        <img class="subreddit-icon" src="{{ extra.cm_icon }}"/>
+        {% endif %}
+        {% if 'category' in extra and extra.category != "" %}
+        <p class="smaller-text highlight-red">Category: {{extra.category}}</p>
         {% endif %}
 
     </div>
     <div class="subreddit-info medium-margin">
     <p class="highlight-purple">{{subreddit.subs}} subscribers</p>
-        {% if 'active' in subreddit_extra %}
-         |&nbsp;<p class="highlight-green">{{subreddit_extra.active}} online</p>
+        {% if 'active' in extra and extra.active != 0  %}
+         |&nbsp;<p class="highlight-green">{{extra.active}} online</p>
         {% endif %}
 
     <p class="smaller-text">Created on {{subreddit_created}}</p>

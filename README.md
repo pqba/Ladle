@@ -54,19 +54,22 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
 **Version 1 Plans**
 - **Pagination** for posts on homepage and for recent comments / posts on user
   - [paginate, stackoverflow](https://stackoverflow.com/questions/33556572/paginate-a-list-of-items-in-python-flask)
-- Use **INFO** api method for calls
-  - [praw.Reddit.info](https://praw.readthedocs.io/en/stable/code_overview/reddit_instance.html#praw.Reddit.info)
 - Add testing suite for app
   - [flask_tests](https://flask.palletsprojects.com/en/3.0.x/testing/#identifying-tests)   
 - Profile application for speed improvements
-  - time.time, flask_profiler
-- Simple search on user or subreddit page and home
+  - time.time(), flask_profiler
+- Simple **search** on user, subreddit, and home
+  - Time filter specifications, consistent UI
 - Comment tree rendering, load comments
 - Create simple rundown for running app
+  - Add `praw.ini` without credentials
 - Host exemplary version
   * Try [pythonanywhere](https://www.pythonanywhere.com/)
 
 **Version 2 Plans**
+- Refactor backend (possibly removing Praw) to use **[pullpush](https://pullpush.io/)**
+  - Seems to be extremely quick and highly customizeable, as well as free
+  - Look into ratelimits, etc. If good, refactor stew_bot to use pullpush.
 - Add the *ability* to save posts, or take notes on posts once logged in
   - Praw save feature or user's db
 - Add user login / logout features to store custom feed profiles?

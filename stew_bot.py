@@ -144,6 +144,7 @@ def subreddit_about(sub_name: str):
         'lang': parsed['lang'],
         # Icons/banners are in 2 different styles, removing possible '?' fixes image links.
         'icon': parsed['icon_img'].split("?")[0],
+        'cm_icon': parsed['community_icon'].split("?")[0],
         'bannerA': parsed['banner_img'].split("?")[0],
         'bannerB': parsed['banner_background_image'].split("?")[0]
     }
@@ -260,12 +261,17 @@ def send_reddit_request(path: str) -> dict:
     token = response.json()['access_token']
     # use token to make request
     headers = {**headers, **{'Authorization': f'bearer {token}'}}
-    response = requests.get(f'https://oauth.reddit.com/{path}', headers=headers)
+    try:
+        response = requests.get(f'https://oauth.reddit.com/{path}', headers=headers)
+    except requests.exceptions.SSLError:
+        return {'error': 'SSL Unexpected EOF for request'}
+    # print(json.dumps(json.loads(response.text), indent=4))
     return json.loads(response.text)
 
 
-# Uses streamble API[https://support.streamable.com/article/46-streamable-api] to get iframe for video
-def send_streamable_request(video_id: str) -> str:
+# Uses streamable API[https://support.streamable.com/article/46-streamable-api] to get iframe for video
+def send_streamable_request(video_id: str) -> dict:
+    # Unsure of what ratelimit is, or of other aspects of API. Unclear documentation.
     url = f"https://api.streamable.com/videos/{video_id}"
     req_text = requests.get(url).text
     stream_info = json.loads(req_text)
@@ -291,11 +297,7 @@ def build_comment_tree(comment: praw.models.comment_forest.CommentForest, depth:
 
 
 def main():
-    # send_streamable_request("var9rw")
-    infy = post_info("1e3lf7e")
-    print(infy['link'])
-    print("redit.com" + infy['link'])
-    print(infy['url'])
+    pass
 
 
 if __name__ == "__main__":

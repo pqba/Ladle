@@ -2,7 +2,20 @@
 {% block title %} Ladle Search r/{{ search.sub }} {% endblock %}
 {% block body %}
 <div class="sub-search-container">
+  <div>
 <a href="/subreddit/{{ search.sub }}" class="post-link content-left"><h2 class="no-vertical-margin"><b>r/{{ search.sub }}</b></h2></a>
+  <form action="/subreddit/{{ search.sub }}/search" method="POST" class="subreddit-search-form" autocomplete="off">
+     <input type="text" name="sub_search" class="subreddit-input-search medium-margin smaller-text" placeholder="Query..." required/>
+     <label for="time">Time: </label>
+      <select name="time-choose" id="time" class="time-selector">
+        <option value="dy">Day</option>
+        <option value="wk">Week</option>
+        <option value="mo" selected="selected">Month</option>
+        <option value="yr">Year</option>
+        <option value="al">All</option>
+      </select>
+  </form>
+    </div>
   <div class="search-content medium-margin">
   <h3 class="highlight-yellow" id="curated-header">Results for <b>"{{ search.q }}"</b></h3>
   <ul class="small-left-pad no-vertical-margin">

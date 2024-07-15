@@ -73,9 +73,15 @@ a.github-link {
   outline: none;
  }
 body,html {
+    font-family: "Reddit Mono", monospace
     background-color: var(--bg-color);
     color: var(--fg-color);
 }
+
+select, input, option {
+    font-family: "Reddit Mono", monospace
+}
+
 /* Pastel color highlighting */
 
 .highlight-yellow {
@@ -344,16 +350,27 @@ background-color: var(--pastel-red);
     background-repeat:no-repeat;
     background-size:contain;
 }
-.subreddit-search {
+.subreddit-search-form {
     float:right;
+    margin-right: .5em;
 }
 .subreddit-input-search {
-     font-family: "Reddit Mono";
     border-radius:.4em;
     background-color: var(--bg-color);
     color: var(--fg-color);
+    margin:0;
+    height: 2em;
 }
 
+.streamy {
+    height: 30em;
+    width: 30em;
+}
+/* Size -> https://stackoverflow.com/questions/5024309/bigger-video-size-width-height-for-youtube-embeds*/
+.yt-embed {  /* Essentially, height = 0.8235 * width */
+    height: 24.705em;
+    width: 30em;
+}
 .smaller-text {
   font-size: 80%;
 }
