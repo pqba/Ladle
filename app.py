@@ -1,6 +1,6 @@
 import stew_bot
+from article import Article
 import flask as fk
-from flask import session
 from flask_caching import Cache
 import datetime
 from dotenv import load_dotenv
@@ -111,13 +111,12 @@ def get_post(p_id):
     if info is None:
         e = stew_bot.clean(f"Post doesn't exist or Ladle cannot find post id: {p_id}.")
         return page_not_found(e)
+    full_url = "https://www.reddit.com" + info['link'].rstrip("/")
     post_created = to_ymd(info['utc'])
     md_text = markdown(info['text'])
-    img_post = info['url'][8] == 'i'  # 'https://i'  is how image posts are formatted
-    # check for video post
-    # check for Youtube video [use <iframe>]
-    return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'],
-                              p_text=md_text, img_post=img_post)
+    post_article = Article(info['url'])
+    return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'],p_link=full_url,
+                              p_text=md_text, post_article=post_article)
 
 
 # Renders user info page, 404 if deleted or invalid
@@ -216,7 +215,7 @@ def page_not_found(e=""):
 
 
 @app.errorhandler(500)
-def internal_server_error(e):
+def internal_server_error(e=""):
     # note that we set the 500 status explicitly
     return fk.render_template('500.html', error=e), 500
 

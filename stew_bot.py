@@ -7,10 +7,6 @@ import configparser
 import json
 
 
-# Documentation: https://praw.readthedocs.io/en/stable/
-
-# Inspiration: https://praw.readthedocs.io/en/latest/tutorials/reply_bot.html
-
 # Bot Name: u/theLadled
 def load_ladle() -> praw.Reddit:
     return praw.Reddit("LadleBot")
@@ -134,7 +130,7 @@ def subreddit_info(sub_name: str) -> dict:
 # Returns icon, banner, active users, and category of sub, empty if 429
 def subreddit_about(sub_name: str):
     api_handle = f"r/{sub_name}/about"
-    interpreted = send_request(path=api_handle)
+    interpreted = send_reddit_request(path=api_handle)
     if 'error' in interpreted:  # For: {'message': 'Too Many Requests', 'error': 429}
         print(f"Subreddit {sub_name} about request error code:  {interpreted['error']}. Full Dict: {interpreted}")
         return {}
@@ -183,6 +179,7 @@ def post_info(post_id: str) -> dict:
     post_data = {
         'id': post_id,
         'url': post_model.url,
+        'link': post_model.permalink,
         'title': post_model.title,
         'text': post_model.selftext,  # Markdown format
         'score': post_model.score,
@@ -244,7 +241,7 @@ def clean(client_input: str) -> str:
     return nh3.clean(client_input)
 
 
-def send_request(path: str) -> dict:
+def send_reddit_request(path: str) -> dict:
     config = configparser.ConfigParser()
     config.read('praw.ini')
     if 'LadleBot' not in config:
@@ -267,6 +264,15 @@ def send_request(path: str) -> dict:
     return json.loads(response.text)
 
 
+# Uses streamble API[https://support.streamable.com/article/46-streamable-api] to get iframe for video
+def send_streamable_request(video_id: str) -> str:
+    url = f"https://api.streamable.com/videos/{video_id}"
+    req_text = requests.get(url).text
+    stream_info = json.loads(req_text)
+    # print(json.dumps(stream_info,indent=4))
+    return stream_info
+
+
 def get_comment_list(post, lim=None):
     post.comments.replace_more(limit=lim)
     for comment in post.comments.list():
@@ -285,8 +291,11 @@ def build_comment_tree(comment: praw.models.comment_forest.CommentForest, depth:
 
 
 def main():
-    print(subreddit_search("python", "generator", "week"))
-    print(subreddit_about("python"))
+    # send_streamable_request("var9rw")
+    infy = post_info("1e3lf7e")
+    print(infy['link'])
+    print("redit.com" + infy['link'])
+    print(infy['url'])
 
 
 if __name__ == "__main__":
