@@ -2,6 +2,8 @@ import praw
 from prawcore import NotFound
 import nh3
 import requests
+import requests.auth
+import configparser
 import json
 
 
@@ -131,9 +133,8 @@ def subreddit_info(sub_name: str) -> dict:
 
 # Returns icon, banner, active users, and category of sub, empty if 429
 def subreddit_about(sub_name: str):
-    url = f"https://www.reddit.com/r/{sub_name}/about.json"
-    req = requests.get(url)
-    interpreted = json.loads(req.text)
+    api_handle = f"r/{sub_name}/about"
+    interpreted = send_request(path=api_handle)
     if 'error' in interpreted:  # For: {'message': 'Too Many Requests', 'error': 429}
         print(f"Subreddit {sub_name} about request error code:  {interpreted['error']}. Full Dict: {interpreted}")
         return {}
@@ -167,7 +168,8 @@ def subreddit_search(sub_name: str, query: str, time: str) -> dict:
     }
     results = []
     for submission in sub_model.search(query, time_filter=time):  # Listing generator
-        results.append([submission, submission.score, submission.num_comments, submission.title, submission.created_utc])
+        results.append(
+            [submission, submission.score, submission.num_comments, submission.title, submission.created_utc])
     search_data['results'] = results
     return search_data
 
@@ -242,6 +244,29 @@ def clean(client_input: str) -> str:
     return nh3.clean(client_input)
 
 
+def send_request(path: str) -> dict:
+    config = configparser.ConfigParser()
+    config.read('praw.ini')
+    if 'LadleBot' not in config:
+        print("You must configure a praw.ini file with a LadleBot to send a request!")
+        return {'error': 'No praw.ini file'}
+    client_id = config.get('LadleBot', 'client_id')
+    client_secret = config.get('LadleBot', 'client_secret')
+    auth = requests.auth.HTTPBasicAuth(client_id, client_secret)
+    data = {
+        'grant_type': 'password',
+        'username': config.get('LadleBot', 'username'),
+        'password': config.get('LadleBot', 'password')
+    }
+    headers = {'User-Agent': config.get('LadleBot', 'user_agent')}
+    response = requests.post("https://www.reddit.com/api/v1/access_token", auth=auth, data=data, headers=headers)
+    token = response.json()['access_token']
+    # use token to make request
+    headers = {**headers, **{'Authorization': f'bearer {token}'}}
+    response = requests.get(f'https://oauth.reddit.com/{path}', headers=headers)
+    return json.loads(response.text)
+
+
 def get_comment_list(post, lim=None):
     post.comments.replace_more(limit=lim)
     for comment in post.comments.list():
@@ -261,6 +286,7 @@ def build_comment_tree(comment: praw.models.comment_forest.CommentForest, depth:
 
 def main():
     print(subreddit_search("python", "generator", "week"))
+    print(subreddit_about("python"))
 
 
 if __name__ == "__main__":
