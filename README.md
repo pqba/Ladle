@@ -69,6 +69,10 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
 - Simple search on user,post, or subreddit page
   * Manage cookies / login or logout of basic profiles
 - Comment tree rendering, load comments
+- Simple search queries in subreddits and home
+  - https://www.reddit.com/dev/api/#GET_search
+- use pushshift
+  - https://github.com/pushshift/api 
 - Take a look at ASYNC loading 
   * [Async Praw](https://asyncpraw.readthedocs.io/en/stable/code_overview/models/submission.html)
 - Add command line job availability or auto-running capabilities

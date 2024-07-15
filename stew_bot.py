@@ -1,6 +1,8 @@
 import praw
 from prawcore import NotFound
 import nh3
+import requests
+import json
 
 
 # Documentation: https://praw.readthedocs.io/en/stable/
@@ -93,18 +95,18 @@ def user_info(user_name: str) -> dict:
         'icon': user_model.icon_img
     }
 
-    new_actions = user_model.new() # Sublisting Generator
+    new_actions = user_model.new()  # Sublisting Generator
     rec_comments = []
     rec_posts = []
     for action in new_actions:
-        if isinstance(action,praw.models.reddit.submission.Submission):
-            rec_posts.append([action,action.score,action.num_comments,action.title])
-        elif isinstance(action,praw.models.reddit.comment.Comment):
-            rec_comments.append([action,action.body,action.score,action.link_id.replace("t3_","")])
+        if isinstance(action, praw.models.reddit.submission.Submission):
+            rec_posts.append([action, action.score, action.num_comments, action.title])
+        elif isinstance(action, praw.models.reddit.comment.Comment):
+            rec_comments.append([action, action.body, action.score, action.link_id.replace("t3_", "")])
         else:
-            continue # Invalid action 
+            continue  # Invalid action
     person_data['comments'] = rec_comments
-    person_data['posts'] = rec_posts    
+    person_data['posts'] = rec_posts
     return person_data
 
 
@@ -118,12 +120,56 @@ def subreddit_info(sub_name: str) -> dict:
         'id': sub_model.id,
         'name': sub_name,
         'desc': sub_model.public_description,
+        'full_desc': sub_model.description,
         'utc': sub_model.created_utc,
         'subs': sub_model.subscribers,
         'nsfw': sub_model.over18
     }
 
     return sub_data
+
+
+# Returns icon, banner, active users, and category of sub, empty if 429
+def subreddit_about(sub_name: str):
+    url = f"https://www.reddit.com/r/{sub_name}/about.json"
+    req = requests.get(url)
+    interpreted = json.loads(req.text)
+    if 'error' in interpreted:  # For: {'message': 'Too Many Requests', 'error': 429}
+        print(f"Subreddit {sub_name} about request error code:  {interpreted['error']}. Full Dict: {interpreted}")
+        return {}
+    parsed = interpreted["data"]
+    # print(json.dumps(parsed, indent=4))
+    sub_info = {
+        'subtitle': parsed['title'],
+        'header_title': parsed['header_title'],
+        'active': parsed['accounts_active'],
+        'category': parsed['advertiser_category'],
+        'lang': parsed['lang'],
+        # Icons/banners are in 2 different styles, removing possible '?' fixes image links.
+        'icon': parsed['icon_img'].split("?")[0],
+        'bannerA': parsed['banner_img'].split("?")[0],
+        'bannerB': parsed['banner_background_image'].split("?")[0]
+    }
+    # Other interesting fields: submit_text, mobile_banner_image,
+    # quarantine, and header_img
+    return sub_info
+
+
+# Searches subreddit for relevant posts on query in time frame, None if invalid name
+def subreddit_search(sub_name: str, query: str, time: str) -> dict:
+    if not sub_exists(sub_name):
+        return None
+
+    sub_model = load_ladle().subreddit(sub_name)
+    search_data = {
+        'sub': sub_name,
+        'q': query
+    }
+    results = []
+    for submission in sub_model.search(query, time_filter=time):  # Listing generator
+        results.append([submission, submission.score, submission.num_comments, submission.title, submission.created_utc])
+    search_data['results'] = results
+    return search_data
 
 
 def post_info(post_id: str) -> dict:
@@ -214,7 +260,7 @@ def build_comment_tree(comment: praw.models.comment_forest.CommentForest, depth:
 
 
 def main():
-    print("hello, stew_bot.")
+    print(subreddit_search("python", "generator", "week"))
 
 
 if __name__ == "__main__":

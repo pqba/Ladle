@@ -5,8 +5,6 @@ from flask_caching import Cache
 import datetime
 from dotenv import load_dotenv
 from os import environ
-import requests
-import json
 from markdown import markdown
 
 load_dotenv()
@@ -35,6 +33,7 @@ sub_profiles = {
 }
 
 
+# Renders homepage using given content profile and loaded top 10 posts
 @app.route('/', methods=["GET", "POST"])
 def root(loaded_posts=None):
     if 'content' not in fk.session:
@@ -115,6 +114,8 @@ def get_post(p_id):
     post_created = to_ymd(info['utc'])
     md_text = markdown(info['text'])
     img_post = info['url'][8] == 'i'  # 'https://i'  is how image posts are formatted
+    # check for video post
+    # check for Youtube video [use <iframe>]
     return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'],
                               p_text=md_text, img_post=img_post)
 
@@ -145,39 +146,40 @@ def get_sub(sub_name):
         return page_not_found(e)
     sub_created = to_ymd(sub['utc'])
     sub['subs'] = f"{sub['subs']:,}"  # Comma separated
-    # TODO: render loaded data
-    #  sub_extra = subreddit_info(sub_name)
-    sub_extra = {}
+    sub['full_desc'] = markdown(sub['full_desc'])
+    sub_extra = stew_bot.subreddit_about(sub_name)
     return fk.render_template("subreddit.html", subreddit=sub, subreddit_created=sub_created, subreddit_bg="",
-                              subreddit_icon="",subreddit_extra=sub_extra)
+                              subreddit_icon="", subreddit_extra=sub_extra)
 
 
-# Returns icon, banner, active users, and category of sub
-def subreddit_info(sub_name: str):
-    url = f"https://www.reddit.com/r/{sub_name}/about.json"
-    req = requests.get(url)
+# Gets input form sub_search form to render results, 404 if invalid
+@app.route("/subreddit/<sub_name>/search", methods=["POST"])
+@cache.memoize(timeout=SHORT_TIMEOUT)
+def search_sub(sub_name):
+    if fk.request.method == "POST":
+        query = stew_bot.clean(fk.request.form.get("sub_search"))
 
-    parsed = json.loads(req.text)["data"]
-    if 'error' in parsed:  # For: {'message': 'Too Many Requests', 'error': 429}
-        return None
+        search = stew_bot.subreddit_search(sub_name, query, "month")
+        if search is None:
+            e = f"Subreddit doesn't exists or the query {query} was invalid."
+            return page_not_found(e)
+        # TODO: pagination...
+        search['results'] = search['results'][:10]
+        for r in search['results']:
+            r[4] = to_ymd(r[4])
+        return fk.render_template("subreddit_search.html", search=search)
 
-    # print(json.dumps(parsed, indent=4))
 
-    sub_info = {
-        'subtitle': parsed['title'],
-        'header_title': parsed['header_title'],
-        'active': parsed['accounts_active'],
-        'category': parsed['advertiser_category'],
-        'lang': parsed['lang'],
-        # Icons/banners are in 2 different styles, removing possible '?' fixes image links.
-        'icon': parsed['icon_img'].split("?")[0],
-        'bannerA': parsed['banner_img'].split("?")[0],
-        'bannerB': parsed['banner_background_image'].split("?")[0]
-    }
-    print(f"PARSED JSON DATA FOR r/{sub_name}:\n{sub_info}\n")
-    # Other interesting fields: description(the full long post), submit_text, mobile_banner_image,
-    # quarantine, and header_img
-    return sub_info
+# Redirect to correct user page
+@app.route("/u/<user_name>")
+def link_user(user_name):
+    return fk.redirect(f"/user/{user_name}")
+
+
+# Redirects to correct sub page
+@app.route("/r/<sub_name>")
+def link_sub(sub_name):
+    return fk.redirect(f"/subreddit/{sub_name}")
 
 
 # Converts UTC timestamp to YMD format

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %} Ladle Search r/{{ search.sub }} {% endblock %}
+{% block body %}
+<div class="sub-search-container">
+<a href="/subreddit/{{ search.sub }}" class="post-link content-left"><h2 class="no-vertical-margin"><b>r/{{ search.sub }}</b></h2></a>
+  <div class="search-content medium-margin">
+  <h3 class="highlight-yellow" id="curated-header">Results for <b>"{{ search.q }}"</b></h3>
+  <ul class="small-left-pad no-vertical-margin">
+    {% for result in search.results %}
+    <li id="selected-post">
+      <a href="/post/{{ result[0] }}" class="post-link">
+        <p>{{ result[3] }} </p>
+      </a>
+      <img src="/static/images/up-arrow.svg" class="upvote-img"> {{ result[1] }} | {{ result[2] }} comments | &nbsp;Posted {{ result[4] }}
+    </li>
+    {% endfor %}
+  </ul>
+    <!--Incorrect link.-->
+    <div class="post-link additional-posts">
+      <a href="/more-posts">Additional Results</a>
+    </div>
+      </div>
+  </div>
+{% endblock %}

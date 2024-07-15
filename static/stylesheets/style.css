@@ -21,7 +21,7 @@
     --pastel-yellow: #d2ae1d;
     --pastel-pink: #e1969c;
     --pastel-blue: #295aac;
-    --pastel-green: #1bbb8al;
+    --pastel-green: #18bd8a;
     --pastel-orange: #e87139;
     --pastel-purple: #9e52b0;
     --pastel-red: #ca3c35;
@@ -307,7 +307,7 @@ background-color: var(--pastel-red);
     margin:0;
     padding:0;
 }
-.post-text {
+.md-text {
   font-size: 90%;
   text-decoration: none;
   padding: 1em;
@@ -336,11 +336,36 @@ background-color: var(--pastel-red);
 .upvote-img {
     height:1em;
 }
+.subreddit-icon {
+    height:3em;
+    border-radius:.25em;
+}
+.subreddit-banner {
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+.subreddit-search {
+    float:right;
+}
+.subreddit-input-search {
+     font-family: "Reddit Mono";
+    border-radius:.4em;
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+}
+
 .smaller-text {
   font-size: 80%;
 }
+.larger-text {
+    font-size:120%;
+}
 .small-left-pad {
   padding-left: 1em;
+}
+.content-left {
+    text-align:left;
+    align-content:left;
 }
 .no-vertical-margin {
   margin-top:0;

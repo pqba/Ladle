@@ -14,7 +14,7 @@
     <div class="post-flair"><p class="highlight-pink smaller-text">{{info.flair}}</p></div>
     {% endif %}
     <div class="post-meta">
-        <h3><a class="post-link" href="/subreddit/{{info.sub}}">r/{{info.sub}}</a></h3>
+        <h3><a class="post-link larger-text" href="/subreddit/{{info.sub}}">r/{{info.sub}}</a></h3>
         <div>
             <p class="smaller-text highlight-blue"><a class="post-link" href="/user/{{ info.who }}">u/{{info.who}}</a>
             </p>
@@ -26,7 +26,7 @@
         {% if info.lock == true %}
         <img src="/static/images/lock.svg" height="24px" />
         {% endif %}
-        <div class="post-text">{{ p_text | safe }}</div>
+        <div class="md-text">{{ p_text | safe }}</div>
         {% if img_post == true %}
         <div class="content-center spacer"><img src="{{ p_url }}"  class="post-image" crossorigin="anonymous" referrerpolicy="no-referrer"/></div>
         {% endif %}

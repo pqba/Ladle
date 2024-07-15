@@ -3,20 +3,38 @@
 
 {% block body %}
 <div class="subreddit-container">
+    <div class="subreddit-search">
+        <form action="/subreddit/{{ subreddit.name }}/search" method="POST">
+        <input type="text" name="sub_search" class="subreddit-input-search medium-margin smaller-text" placeholder="Query..."/>
+              <button type="submit" class="curated-button smaller-text">Search</button>
+        </form>
+    </div>
     <div class="subreddit-top">
         <h2>r/{{subreddit.name}}{% if subreddit.nsfw == true %}
-            <img src="/static/images/warning.svg" height="24px" />
+            <img src="/static/images/warning.svg" height="24px" /> <!--TODO: fix px-->
             {% endif %}
         </h2>
+        {% if 'icon' in subreddit_extra %}
+        <img class="subreddit-icon" src="{{ subreddit_extra.icon }}"/>
+        {% endif %}
+        {% if 'category' in subreddit_extra %}
+        <p class="smaller-text highlight-red">Category: {{subreddit_extra.category}}</p>
+        {% endif %}
 
     </div>
     <div class="subreddit-info medium-margin">
     <p class="highlight-purple">{{subreddit.subs}} subscribers</p>
+        {% if 'active' in subreddit_extra %}
+         |&nbsp;<p class="highlight-green">{{subreddit_extra.active}} online</p>
+        {% endif %}
 
     <p class="smaller-text">Created on {{subreddit_created}}</p>
     <img src="{{ subreddit_bg }}">
     <img src="{{ subreddit_icon }}">
+        <hr>
     <p><b>Description: </b>{{subreddit.desc}}</p>
+        <h2 class="highlight-blue"><b>About</b></h2>
+        <div class="md-text">{{ subreddit.full_desc | safe }}</div>
     </div>
 
 </div>
