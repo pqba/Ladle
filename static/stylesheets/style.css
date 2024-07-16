@@ -29,7 +29,7 @@
     --nav-bg: #313030;
     --post-linkfg: white;
 }
-
+/*TODO: refactor class icons to only change url...*/
 [data-theme="light"] .github-icon {
     background-image: url('/static/images/github_icon-light.png');
     height:2em;
@@ -65,6 +65,49 @@ a.github-link {
     background-repeat:no-repeat;
     background-size:contain;
 }
+[data-theme="light"] .warn-icon {
+    background-image: url('/static/images/warning-light.svg');
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+
+[data-theme="dark"] .warn-icon {
+     background-image: url('/static/images/warning-dark.svg');
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+
+[data-theme="light"] .lock-icon {
+     background-image: url('/static/images/lock-light.svg');
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+
+[data-theme="dark"] .lock-icon {
+     background-image: url('/static/images/lock-dark.svg');
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+
+[data-theme="light"] .up-icon {
+    height: 1em;
+    width: 1em;
+    margin-right: .5em;
+     background-image: url('/static/images/up-arrow-light.svg');
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+
+[data-theme="dark"] .up-icon {
+    height: 1em;
+    width: 1em;
+        margin-right: .5em;
+     background-image: url('/static/images/up-arrow-dark.svg');
+    background-repeat:no-repeat;
+    background-size:contain;
+    display: block;
+    background-size: cover
+}
 .theme-icon {
  background: none;
   border: none;
@@ -72,8 +115,13 @@ a.github-link {
   margin: 0;
   outline: none;
  }
+
+.icon-container {
+    display:flex;
+    margin-left: .5em;
+}
 body,html {
-    font-family: "Reddit Mono", monospace
+    font-family: "Reddit Mono", monospace;
     background-color: var(--bg-color);
     color: var(--fg-color);
 }

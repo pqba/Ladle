@@ -6,7 +6,7 @@
 <div class="post-container">
     <a class="post-link" href="{{ p_link }}">
         <h2>{{info.title}} {% if info.nsfw == true %}
-            <img src="/static/images/warning.svg" height="24px" />
+            <div class="icon-container"><div class="warn-icon"></div></div>
             {% endif %}
         </h2>
     </a>
@@ -24,14 +24,14 @@
     </div>
     <div class="post-content">
         {% if info.lock == true %}
-        <img src="/static/images/lock.svg" height="24px" />
+        <div class="icon-container"><div class="lock-icon"></div></div>
         {% endif %}
         <div class="md-text">{{ p_text | safe }}</div>
         {{ p_article | safe }}
     </div>
     <div class="post-stats">
-        <p> <img src="/static/images/up-arrow.svg" class="upvote-img"> {{info.score}} [{{info.ratio}}%] | {{info.nc}}
-            comments</p>
+        <div class="icon-container"> <div class="up-icon"></div> {{info.score}} [{{info.ratio}}%] | {{info.nc}}
+            comments</div>
     </div>
     <div class="post-comments">
         <!--TODO: render comments-->

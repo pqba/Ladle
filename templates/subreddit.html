@@ -11,7 +11,7 @@
     </div>
     <div class="subreddit-top">
         <h2>r/{{subreddit.name}}{% if subreddit.nsfw == true %}
-            <img src="/static/images/warning.svg" height="24px" /> <!--TODO: fix px-->
+            <div class="icon-container"><div class="warn-icon"></div></div>
             {% endif %}
         </h2>
         {% if 'subtitle' in extra and extra.subtitle != "" %}
