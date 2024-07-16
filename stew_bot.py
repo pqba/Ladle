@@ -155,7 +155,7 @@ def subreddit_about(sub_name: str):
 
 # Searches subreddit for relevant posts on query in time frame, None if invalid name
 def subreddit_search(sub_name: str, query: str, time: str) -> dict:
-    if not sub_exists(sub_name):
+    if not sub_exists(sub_name) or not time_filter_exists(time) or query == "":
         return None
 
     sub_model = load_ladle().subreddit(sub_name)
@@ -238,6 +238,10 @@ def post_exists(post_id: str):
     return True
 
 
+def time_filter_exists(time_period: str) -> bool:
+    return time_period in ["hour","day", "week", "month", "year", "all"]
+
+
 def clean(client_input: str) -> str:
     return nh3.clean(client_input)
 
@@ -297,7 +301,7 @@ def build_comment_tree(comment: praw.models.comment_forest.CommentForest, depth:
 
 
 def main():
-    pass
+    print("BRUH")
 
 
 if __name__ == "__main__":

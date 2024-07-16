@@ -10,10 +10,12 @@
         </form>
     </div>
     <div class="subreddit-top">
-        <h2>r/{{subreddit.name}}{% if subreddit.nsfw == true %}
-            <div class="icon-container"><div class="warn-icon"></div></div>
+        <div class="icon-container">
+          <h2>r/{{subreddit.name}}</h2>
+            {% if subreddit.nsfw == true %}
+             <div class="warn-icon large-icon margin-top-left"></div>
             {% endif %}
-        </h2>
+        </div>
         {% if 'subtitle' in extra and extra.subtitle != "" %}
         <p class="smaller-text">{{ extra.subtitle }}</p>
         {% endif %}

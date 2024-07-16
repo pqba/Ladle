@@ -16,9 +16,9 @@
     {% for post in loadedPosts %}
     <li id="selected-post">
       <a href="/post/{{post[-1]}}" class="post-link">
-        <p><b>{{post[0]}}</b> {{post[1]}} </p>
+        <p class="no-vertical-margin"><b>{{post[0]}}</b> {{post[1]}} </p>
       </a>
-      <img src="/static/images/up-arrow.svg" class="upvote-img"> {{post[3]}} [{{post[2]}}%] | {{post[5]}} comments
+      <div class="icon-container"> <div class="up-icon"><div class="warn-icon"></div></div> {{post[3]}} [{{post[2]}}%] | {{post[5]}} comments </div>
     </li>
     {% endfor %}
   </ul>
@@ -33,7 +33,7 @@
 <div id="foot">
   <p> See my GitHub for other projects: </p>
   <a href="https://github.com/pqba" class="github-link" target="_blank">
-    <div class="github-icon"></div>
+    <div class="github-icon large-icon"></div>
   </a>
 </div>
 {% endblock %}

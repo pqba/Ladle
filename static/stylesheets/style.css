@@ -29,97 +29,89 @@
     --nav-bg: #313030;
     --post-linkfg: white;
 }
-/*TODO: refactor class icons to only change url...*/
-[data-theme="light"] .github-icon {
-    background-image: url('/static/images/github_icon-light.png');
+
+/* Icon styling */
+.small-icon {
+    height: 1em;
+    width: 1em;
+}
+.large-icon {
     height:2em;
-    width:2em;
+    width: 2em;
+}
+.github-icon {
     background-repeat:no-repeat;
     background-size:contain;
 }
-
+[data-theme="light"] .github-icon {
+    background-image: url('/static/images/github_icon-light.png');
+}
 [data-theme="dark"] .github-icon {
     background-image: url('/static/images/github_icon-dark.png');
-    height:2em;
-    width:2em;
-    background-repeat:no-repeat;
-    background-size:contain;
 }
 
 a.github-link {
   margin-top:.5em;
 }
 
-[data-theme="light"] .theme-icon {
-    height:1em;
-    width:1em;
-    background-image: url('/static/images/icon-light.png'); /* Sun */
+.theme-icon {
     background-repeat:no-repeat;
     background-size:contain;
+      border: none;
+    padding: 0;
+    margin: 0;
+  outline: none;
+  background-color: var(--nav-bg);
+}
+[data-theme="light"] .theme-icon {
+    background-image: url('/static/images/icon-light.png'); /* Sun */
 }
 
 [data-theme="dark"] .theme-icon {
-    height:1em;
-    width:1em;
     background-image: url('/static/images/icon-dark.png'); /* Moon */
+}
+.warn-icon {
     background-repeat:no-repeat;
     background-size:contain;
 }
 [data-theme="light"] .warn-icon {
     background-image: url('/static/images/warning-light.svg');
-    background-repeat:no-repeat;
-    background-size:contain;
 }
 
 [data-theme="dark"] .warn-icon {
      background-image: url('/static/images/warning-dark.svg');
+}
+
+.lock-icon {
     background-repeat:no-repeat;
     background-size:contain;
 }
-
 [data-theme="light"] .lock-icon {
      background-image: url('/static/images/lock-light.svg');
-    background-repeat:no-repeat;
-    background-size:contain;
 }
 
 [data-theme="dark"] .lock-icon {
      background-image: url('/static/images/lock-dark.svg');
+}
+
+.up-icon {
+    margin-right: .5em;
     background-repeat:no-repeat;
     background-size:contain;
 }
-
 [data-theme="light"] .up-icon {
-    height: 1em;
-    width: 1em;
-    margin-right: .5em;
      background-image: url('/static/images/up-arrow-light.svg');
-    background-repeat:no-repeat;
-    background-size:contain;
 }
 
 [data-theme="dark"] .up-icon {
-    height: 1em;
-    width: 1em;
-        margin-right: .5em;
      background-image: url('/static/images/up-arrow-dark.svg');
-    background-repeat:no-repeat;
-    background-size:contain;
-    display: block;
-    background-size: cover
 }
-.theme-icon {
- background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  outline: none;
- }
 
 .icon-container {
     display:flex;
     margin-left: .5em;
 }
+/* General styling */
 body,html {
     font-family: "Reddit Mono", monospace;
     background-color: var(--bg-color);
@@ -203,7 +195,7 @@ background-color: var(--pastel-red);
   font-style: normal;
 }
 
-
+/* Post styling */
 .post-link p {
   text-align: left;
   margin-top:0;
@@ -241,19 +233,6 @@ background-color: var(--pastel-red);
 
 #foot p {
   padding-right: 1em;
-  /*Space btwn para and link*/
-}
-
-.spacer {
-  margin-bottom: 2em;
-}
-.double-spacer {
-    margin-bottom:2em;
-    margin-top:2em;
-}
-
-.medium-margin {
-  margin: 1.5em;
 }
 
 #go-home a {
@@ -307,7 +286,7 @@ background-color: var(--pastel-red);
   color: inherit;
 }
 
-/*Sub Form Styling*/
+/*Sub Form and Post Styling*/
 .subreddit-form {
   display: flex;
   flex-direction: column;
@@ -410,6 +389,7 @@ background-color: var(--pastel-red);
     height: 2em;
 }
 
+/* Post embeds */
 .streamy {
     height: 30em;
     width: 30em;
@@ -419,12 +399,14 @@ background-color: var(--pastel-red);
     height: 24.705em;
     width: 30em;
 }
+/* Text sizes */
 .smaller-text {
   font-size: 80%;
 }
 .larger-text {
     font-size:120%;
 }
+/* General spacing rules */
 .small-left-pad {
   padding-left: 1em;
 }
@@ -435,6 +417,26 @@ background-color: var(--pastel-red);
 .no-vertical-margin {
   margin-top:0;
   margin-bottom:0;
+}
+.small-spacing {
+    padding:.5em;
+    margin:.5em;
+}
+
+.spacer {
+  margin-bottom: 2em;
+}
+.double-spacer {
+    margin-bottom:2em;
+    margin-top:2em;
+}
+
+.medium-margin {
+  margin: 1.5em;
+}
+.margin-top-left {
+    margin-top: 1em;
+    margin-left: 1em;
 }
 .content-center {
     text-align:center;

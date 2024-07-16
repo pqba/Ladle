@@ -15,9 +15,9 @@
             {% for post in person.posts %}
             <li id="selected-post">
                 <a href="/post/{{ post[0] }}" class="post-link">
-                    <p><b>{{ post[3] }}</b></p>
+                    <p class="no-vertical-margin"><b>{{ post[3] }}</b></p>
                 </a>
-                <img src="/static/images/up-arrow.svg" class="upvote-img"> {{ post[1] }} | {{ post[2] }}
+                <div><div class="up-icon small-icon"></div></div> {{ post[1] }} | {{ post[2] }}
                 comments
             </li>
             {% endfor %}

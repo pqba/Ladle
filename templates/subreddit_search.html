@@ -8,23 +8,26 @@
      <input type="text" name="sub_search" class="subreddit-input-search medium-margin smaller-text" placeholder="Query..." required/>
      <label for="time">Time: </label>
       <select name="time-choose" id="time" class="time-selector">
-        <option value="dy">Day</option>
-        <option value="wk">Week</option>
-        <option value="mo" selected="selected">Month</option>
-        <option value="yr">Year</option>
-        <option value="al">All</option>
+        <option value="hour">Hour</option>
+        <option value="day">Day</option>
+        <option value="week">Week</option>
+        <option value="month" selected="selected">Month</option>
+        <option value="year">Year</option>
+        <option value="all">All</option>
       </select>
+     <button type="submit" class="curated-button smaller-text">Search</button>
+
   </form>
     </div>
   <div class="search-content medium-margin">
-  <h3 class="highlight-yellow" id="curated-header">Results for <b>"{{ search.q }}"</b></h3>
+  <div class="spacer"><h3 class="highlight-yellow" id="curated-header">Results for <b>"{{ search.q }}"</b> this {{ search.time }}</h3></div>
   <ul class="small-left-pad no-vertical-margin">
     {% for result in search.results %}
     <li id="selected-post">
       <a href="/post/{{ result[0] }}" class="post-link">
-        <p>{{ result[3] }} </p>
+        <p class="no-vertical-margin">{{ result[3] }} </p>
       </a>
-      <div class="icon-container"><div class="up-icon"></div> {{ result[1] }} | {{ result[2] }} comments | &nbsp;Posted {{ result[4] }} </div>
+      <div class="icon-container"><div class="up-icon small-icon"></div> {{ result[1] }} | {{ result[2] }} comments | &nbsp;Posted {{ result[4] }} </div>
     </li>
     {% endfor %}
   </ul>

@@ -148,25 +148,29 @@ def get_sub(sub_name):
     sub['full_desc'] = markdown(sub['full_desc'])
     sub_extra = stew_bot.subreddit_about(sub_name)
     return fk.render_template("subreddit.html", subreddit=sub, subreddit_created=sub_created, subreddit_bg="",
-                              subreddit_icon="", extra=sub_extra)
+                              subreddit_icon="", extra=sub_extra, search_error="")
 
 
 # Gets input form sub_search form to render results, 404 if invalid
 @app.route("/subreddit/<sub_name>/search", methods=["POST"])
-@cache.memoize(timeout=SHORT_TIMEOUT)
 def search_sub(sub_name):
-    if fk.request.method == "POST":
-        query = stew_bot.clean(fk.request.form.get("sub_search"))
+    query = stew_bot.clean(fk.request.form.get("sub_search"))
+    time_filter = "month"
+    if fk.request.form.get("time-choose"):
+        time_filter = fk.request.form.get("time-choose")
+    search = stew_bot.subreddit_search(sub_name, query, time_filter)
 
-        search = stew_bot.subreddit_search(sub_name, query, "month")
-        if search is None:
-            e = f"Subreddit doesn't exists or the query {query} was invalid."
-            return page_not_found(e)
-        # TODO: pagination...
-        search['results'] = search['results'][:10]
-        for r in search['results']:
-            r[4] = to_ymd(r[4])
-        return fk.render_template("subreddit_search.html", search=search)
+    if search is None:
+        e = stew_bot.clean(f"Either r/{sub_name} doesn't exist, the query \"{query}\" was invalid or the "
+                           f" time \"{time_filter}\" was unrecognized.")
+        return page_not_found(e)
+
+    search['time'] = time_filter
+    # TODO: pagination...
+    search['results'] = search['results'][:10]
+    for r in search['results']:
+        r[4] = to_ymd(r[4])
+    return fk.render_template("subreddit_search.html", search=search)
 
 
 # Redirect to correct user page
