@@ -1,5 +1,4 @@
 from stew_bot import send_streamable_request, best_video_quality
-import subprocess
 
 # Article class for Posts to be either Image, Video, YouTube, Streamable, or unrecognized
 class Article:
