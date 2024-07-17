@@ -239,7 +239,7 @@ def post_exists(post_id: str):
 
 
 def time_filter_exists(time_period: str) -> bool:
-    return time_period in ["hour","day", "week", "month", "year", "all"]
+    return time_period in ["hour", "day", "week", "month", "year", "all"]
 
 
 def clean(client_input: str) -> str:
@@ -283,25 +283,35 @@ def send_streamable_request(video_id: str) -> dict:
     return stream_info
 
 
-def get_comment_list(post, lim=None):
-    post.comments.replace_more(limit=lim)
-    for comment in post.comments.list():
-        print(comment.body)
+# Fetches and finds maximum quality resolution for mpd video playlist, N/A if not found
+def best_video_quality(mpd_url: str) -> str:
+    # REFERENCES: https://www.reddit.com/r/redditdev/comments/nzq955/why_doesnt_vredditdashplaylistmpd_have_1080p_mp4s/ https://www.cloudflare.com/learning/video/what-is-mpeg-dash/
+    response = requests.get(mpd_url)
+    if response.status_code == 200:
+        page = response.content.decode('utf-8')  # Bytes to string
+        print(page)
+        max_quality = "N/A"
+        for line in page.splitlines():
+            cut_line = line.strip()
+            if cut_line.startswith("<BaseURL") and "AUDIO" not in cut_line:
+                height = cut_line.split('DASH_')[1].split(".mp4")[0]
+                max_quality = f"{height}"
+        return max_quality
+    else:
+        return "N/A"
 
 
-def get_top_level_comments(post):
-    post.comments.replace_more(limit=0)
-    for top_level_comment in post.comments:
-        print(str(top_level_comment.body).replace("\n", "|"))
+def get_comments():
+    pass
 
 
-# TODO: finish building comment tree using parent child relationship, allow for expansion as well
-def build_comment_tree(comment: praw.models.comment_forest.CommentForest, depth: int):
+def build_comment_tree():
     pass
 
 
 def main():
-    print("BRUH")
+    mq = best_video_quality("https://v.redd.it/lcl94b7cr4cd1/DASHPlaylist.mpd")
+    print(mq)
 
 
 if __name__ == "__main__":

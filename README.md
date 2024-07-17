@@ -63,6 +63,9 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
 - Comment tree rendering, load comments
 - Create simple rundown for running app
   - Add `praw.ini` without credentials
+- Explore options for adding audio to `v.reddit.com/{id}/video.mp4` links
+- Transition to HTTPS
+  - [How to](https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https)
 - Host exemplary version
   * Try [pythonanywhere](https://www.pythonanywhere.com/)
 
@@ -75,6 +78,13 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
 - Add user login / logout features to store custom feed profiles?
 - Add possible SQL Alchemy DB for posts
   - [SQL Alchemy](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/)
+  - Add index on subreddit ID to avoid API calls to get name.
+- Improve embed with Pyembed
+  - [Basic Docs](https://pyembed.github.io/usage/standalone/)
+- Use embed api in `article.py` to load different types of posts
+  - [Embedly](https://docs.embed.ly/reference/embedly-api)
+    - Seems to be the newer solution, but costs money for API key.
+  - [OEmbed](https://oembed.com/)
 - Render a loading page (json fetching?) until content is done loading
 - Add command line job availability or auto-running capabilities
   - FastAPI for Ladle

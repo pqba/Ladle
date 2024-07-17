@@ -390,6 +390,9 @@ background-color: var(--pastel-red);
 }
 
 /* Post embeds */
+.normal-vid {
+    max-height: 30em;
+}
 .streamy {
     height: 30em;
     width: 30em;

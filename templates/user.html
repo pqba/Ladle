@@ -26,7 +26,7 @@
             {% for comment in person.comments %}
             <div class="smaller-text spacer">
                 <a href="/post/{{ comment[3] }}" class="post-link">{{ comment[1] }}</a>  
-               <img src="/static/images/up-arrow.svg" class="upvote-img"> {{ comment[2] }}
+              <div class="icon-container">  <div class="up-icon small-icon"></div>{{ comment[2] }}</div>
             </div>
             {% endfor %}
         </ul>
