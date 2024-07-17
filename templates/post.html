@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 
 {% block title %}Ladle Post |{{info.id}}| {% endblock %}
-
 {% block body %}
 <div class="post-container">
     <a class="post-link" href="{{ p_link }}">
-        <h2>{{info.title}} {% if info.nsfw == true %}
-            <div class="icon-container"><div class="warn-icon small-icon"></div></div>
-            {% endif %}
+        <h2>{{info.title}}
         </h2>
+        <div class="icon-container">
+            {% if info.nsfw == true %}<div class="warn-icon large-icon tiny-margin"></div> {% endif %}
+         {% if info.lock == true %} <div class="icon-container"><div class="lock-icon large-icon tiny-margin"></div></div> {% endif %}
+        </div>
     </a>
     {% if info.flair is not none %}
     <div class="post-flair"><p class="highlight-pink smaller-text">{{info.flair}}</p></div>
@@ -23,9 +24,6 @@
         <img class="user-pfp" src="{{ u_icon }}" alt="User PFP"/>
     </div>
     <div class="post-content">
-        {% if info.lock == true %}
-        <div class="icon-container"><div class="lock-icon small-icon"></div></div>
-        {% endif %}
         <div class="md-text">{{ p_text | safe }}</div>
         {{ p_article | safe }}
     </div>

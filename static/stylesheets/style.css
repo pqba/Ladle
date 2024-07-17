@@ -312,8 +312,7 @@ background-color: var(--pastel-red);
 }
 
 .curated-button:hover {
-  background-color: var(--fg-color);
-  /* Slightly darker background */
+  background-color: white;
 }
 
 
@@ -389,6 +388,14 @@ background-color: var(--pastel-red);
     height: 2em;
 }
 
+.time-selector {
+    border-radius: .5em;
+    cursor: pointer;
+}
+.time-selector:hover {
+    background-color: white;
+}
+
 /* Post embeds */
 .normal-vid {
     max-height: 30em;
@@ -433,7 +440,9 @@ background-color: var(--pastel-red);
     margin-bottom:2em;
     margin-top:2em;
 }
-
+.tiny-margin {
+    margin: .2em;
+}
 .medium-margin {
   margin: 1.5em;
 }

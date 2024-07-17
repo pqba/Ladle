@@ -1,4 +1,5 @@
-from stew_bot import send_streamable_request, best_video_quality
+from stew_bot import load_ladle, best_video_quality, send_streamable_request, gallery_links
+
 
 # Article class for Posts to be either Image, Video, YouTube, Streamable, or unrecognized
 class Article:
@@ -6,8 +7,10 @@ class Article:
     _display_html = ""
     div_begin = "<div class = \"content-center spacer\">"
     div_end = "</div>"
+    image_tags = "class=\"post-image\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\""
     iframe_tags = "referrerpolicy=\"no-referrer\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" frameborder=\"0\" allowfullscreen"
     video_tags = "class=\"normal-vid\" type=\"video/mp4\" controls"
+
     def __init__(self, raw_url: str):
         self._url = raw_url
         self._display_html = self._determine_display()
@@ -17,7 +20,7 @@ class Article:
         if 'reddit.com/r/' in self._url:
             return ""
         elif 'i.redd.it' in self._url:
-            return f"{self.div_begin} <img src=\"{self._url}\" class=\"post-image\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"/> {self.div_end}"
+            return f"{self.div_begin} <img src=\"{self._url}\" {self.image_tags}/> {self.div_end}"
 
         elif 'v.redd.it' in self._url:
             video_quality = best_video_quality(f"{self._url}/DASHPlaylist.mpd")
@@ -43,6 +46,13 @@ class Article:
         elif 'youtube' in self._url:
             yt_embed = f"https://www.youtube-nocookie.com/embed/{self._url.split("v=")[-1]}"
             return f"{self.div_begin} <iframe src=\"{yt_embed}\" {self.iframe_tags} class=\"yt-embed\"></iframe>{self.div_end}"
+        elif 'reddit.com/gallery/' in self._url:
+            gallery_model = load_ladle().submission(url=self._url)
+            post_carousel = gallery_links(gallery_model.media_metadata)
+            # TODO: figure out post carousels
+            print(post_carousel)
+            gallery_script = f"<script>console.log(\"Hello, gallery\");</script>"
+            return f"{self.div_begin} <button>< <img src={post_carousel[0]} {self.image_tags}/> {self.div_end} {gallery_script}"
         else:
             """
             Tried to implement this, but it added an immense amount of time to rendering.

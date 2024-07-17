@@ -289,7 +289,6 @@ def best_video_quality(mpd_url: str) -> str:
     response = requests.get(mpd_url)
     if response.status_code == 200:
         page = response.content.decode('utf-8')  # Bytes to string
-        print(page)
         max_quality = "N/A"
         for line in page.splitlines():
             cut_line = line.strip()
@@ -299,6 +298,15 @@ def best_video_quality(mpd_url: str) -> str:
         return max_quality
     else:
         return "N/A"
+
+
+# Returns list of the best quality image urls from submission.media_metadata
+def gallery_links(media_data: dict) -> list[str]:
+    image_package = []
+    for img in media_data.values():
+        largest_img_url = img['s']['u']
+        image_package.append(largest_img_url)
+    return image_package
 
 
 def get_comments():
