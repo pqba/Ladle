@@ -58,7 +58,7 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
   - [flask_tests](https://flask.palletsprojects.com/en/3.0.x/testing/#identifying-tests)   
 - Profile application for speed improvements
   - time.time(), flask_profiler
-- Simple **search** on user, subreddit, and home
+- Simple **search** on subreddit and home
   - Time filter specifications, consistent UI
 - Comment tree rendering, load comments
 - Create simple rundown for running app

@@ -7,11 +7,12 @@ import configparser
 import json
 
 
-# Bot Name: u/theLadled
+# Returns praw bot from praw.ini file
 def load_ladle() -> praw.Reddit:
     return praw.Reddit("LadleBot")
 
 
+# Returns praw bot from inputted strings
 def setup_ladle(client_id: str, client_secret: str, pw: str, u_agent: str, uname: str) -> praw.Reddit:
     reddit = praw.Reddit(
         client_id=client_id,
@@ -59,13 +60,13 @@ def load_posts(amount=100, selected_subs=None) -> list:
         amount = 50  # Default Cutoff
     reddit = load_ladle()
 
-    search = ""
+    combined_subs = ""
     for sub in selected_subs[:-1]:
-        search += sub + "+"
-    search += selected_subs[-1]
+        combined_subs += sub + "+"
+    combined_subs += selected_subs[-1]
 
     posts = []
-    for submission in reddit.subreddit(search).hot(limit=amount):
+    for submission in reddit.subreddit(combined_subs).hot(limit=amount):
         info = (f"r/{str(submission.subreddit).lower()}",
                 f"{submission.title}", int(float(submission.upvote_ratio) * 100), submission.score,
                 submission.url, submission.num_comments, submission.id)
@@ -75,8 +76,9 @@ def load_posts(amount=100, selected_subs=None) -> list:
     return ordered
 
 
-def sort_posts(content: list, asc: bool) -> list:
-    return sorted(content, key=lambda x: x[2] * x[3], reverse=asc)
+# Simple content sorting algorithm for display
+def sort_posts(content: list, asc: bool, score_ind=2, ratio_ind=3) -> list:
+    return sorted(content, key=lambda x: x[score_ind] * x[ratio_ind], reverse=asc)
 
 
 def user_info(user_name: str) -> dict:
@@ -128,7 +130,7 @@ def subreddit_info(sub_name: str) -> dict:
 
 
 # Returns icon, banner, active users, and category of sub, empty if 429
-def subreddit_about(sub_name: str):
+def subreddit_about(sub_name: str) -> dict:
     api_handle = f"r/{sub_name}/about"
     interpreted = send_reddit_request(path=api_handle)
     if 'error' in interpreted:  # For: {'message': 'Too Many Requests', 'error': 429}
@@ -157,17 +159,40 @@ def subreddit_about(sub_name: str):
 def subreddit_search(sub_name: str, query: str, time: str) -> dict:
     if not sub_exists(sub_name) or not time_filter_exists(time) or query == "":
         return None
-
     sub_model = load_ladle().subreddit(sub_name)
     search_data = {
         'sub': sub_name,
-        'q': query
+        'q': query,
+        'time': time
     }
+
     results = []
     for submission in sub_model.search(query, time_filter=time):  # Listing generator
-        results.append(
-            [submission, submission.score, submission.num_comments, submission.title, submission.created_utc])
-    search_data['results'] = results
+        results.append([submission, submission.score, submission.num_comments, submission.title,
+                        submission.created_utc, int(float(submission.upvote_ratio) * 100)])
+    ordered_results = sort_posts(content=results, asc=True, score_ind=1, ratio_ind=5)
+    search_data['results'] = ordered_results
+    return search_data
+
+
+def home_search(query: str, time: str) -> dict:
+    if not time_filter_exists(time) or query == "":
+        return None
+    all_model = load_ladle().subreddit("all")
+    search_data = {
+        'q': query,
+        'time': time
+    }
+    general_results = []
+    for submission in all_model.search(query, time_filter=time):  # Listing generator
+        general_results.append([str(submission), submission.score, submission.num_comments, submission.title,
+                                submission.created_utc, f"r/{str(submission.subreddit)}",
+                                int(float(submission.upvote_ratio) * 100)])
+
+    ordered_content = sort_posts(content=general_results, asc=True, score_ind=1, ratio_ind=6)
+
+    search_data['results'] = ordered_content
+
     return search_data
 
 
@@ -198,13 +223,14 @@ def post_info(post_id: str) -> dict:
     return post_data
 
 
-# Mark string converted post as seen by hiding it
+# Mark string converted post id as seen by hiding it, does nothing if id invalid
 def mark_seen(post_id: str) -> None:
     if post_exists(post_id):
         post_model = load_ladle().submission(post_id)
         post_model.hide()
 
 
+# Unhides a given post from string id, does nothing if id invalid
 def mark_unseen(post_id: str) -> None:
     if post_exists(post_id):
         post_model = load_ladle().submission(post_id)
@@ -230,7 +256,7 @@ def user_exists(username: str) -> bool:
     return True
 
 
-def post_exists(post_id: str):
+def post_exists(post_id: str) -> bool:
     try:
         load_ladle().submission(post_id).score
     except NotFound:
@@ -242,10 +268,12 @@ def time_filter_exists(time_period: str) -> bool:
     return time_period in ["hour", "day", "week", "month", "year", "all"]
 
 
+# Uses nh3 library to sanitize untrusted and rendered user input
 def clean(client_input: str) -> str:
     return nh3.clean(client_input)
 
 
+# Sends direct API request to Reddit from path given using praw.ini file for creds
 def send_reddit_request(path: str) -> dict:
     config = configparser.ConfigParser()
     config.read('praw.ini')
@@ -285,7 +313,8 @@ def send_streamable_request(video_id: str) -> dict:
 
 # Fetches and finds maximum quality resolution for mpd video playlist, N/A if not found
 def best_video_quality(mpd_url: str) -> str:
-    # REFERENCES: https://www.reddit.com/r/redditdev/comments/nzq955/why_doesnt_vredditdashplaylistmpd_have_1080p_mp4s/ https://www.cloudflare.com/learning/video/what-is-mpeg-dash/
+    # REFERENCES: https://www.reddit.com/r/redditdev/comments/nzq955/why_doesnt_vredditdashplaylistmpd_have_1080p_mp4s/
+    #             https://www.cloudflare.com/learning/video/what-is-mpeg-dash/
     response = requests.get(mpd_url)
     if response.status_code == 200:
         page = response.content.decode('utf-8')  # Bytes to string
@@ -318,8 +347,8 @@ def build_comment_tree():
 
 
 def main():
-    mq = best_video_quality("https://v.redd.it/lcl94b7cr4cd1/DASHPlaylist.mpd")
-    print(mq)
+    res = home_search("steph", "month")
+
 
 
 if __name__ == "__main__":

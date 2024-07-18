@@ -9,16 +9,25 @@
   <p class="highlight-purple">{{date}} </p>&nbsp;|
   <p class="highlight-yellow"><span>Discover curated posts, browse specific subreddit groups, and more!</span></p>
 </div>
+<div class="subreddit-search-form">
+        <form action="/home/search" method="POST"  autocomplete="off">
+        <input type="text" name="home_search" class="subreddit-input-search medium-margin smaller-text" placeholder="Query..." required/>
+              <button type="submit" class="curated-button smaller-text">Search</button>
+        </form>
+    </div>
 <div class="spacer"></div>
 <div id="posts">
   <p class="highlight-blue" id="curated-header">Curated Posts</p>
   <ul class="small-left-pad no-vertical-margin">
     {% for post in loadedPosts %}
     <li id="selected-post">
-      <a href="/post/{{post[-1]}}" class="post-link">
+      <a href="/post/{{ post[6] }}" class="post-link">
         <p class="no-vertical-margin"><b>{{post[0]}}</b> {{post[1]}} </p>
       </a>
       <div class="icon-container"> <div class="up-icon small-icon"></div> {{post[3]}} [{{post[2]}}%] | {{post[5]}} comments
+          {% if post|length > 7 %}
+          | Posted on {{post[7]}}
+          {% endif %}
       </div>
     </li>
     {% endfor %}

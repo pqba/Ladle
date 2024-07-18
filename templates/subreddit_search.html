@@ -20,7 +20,7 @@
   </form>
     </div>
   <div class="search-content medium-margin">
-  <div class="spacer"><h3 class="highlight-yellow" id="curated-header">Results for <b>"{{ search.q }}"</b> this {{ search.time }}</h3></div>
+  <div class="spacer"><h3 class="highlight-yellow" id="curated-header">Results for <b>"{{ search.q }}"</b> {% if search.time != "all" %} this {{ search.time }} {% endif %}</h3></div>
   <ul class="small-left-pad no-vertical-margin">
     {% for result in search.results %}
     <li id="selected-post">
@@ -31,9 +31,9 @@
     </li>
     {% endfor %}
   </ul>
-    <!--Incorrect link.-->
+    <!--Invalid route.-->
     <div class="post-link additional-posts">
-      <a href="/more-posts">Additional Results</a>
+      <a href="/subreddit/{{ search.sub }}/more-posts">Additional Results</a>
     </div>
       </div>
   </div>

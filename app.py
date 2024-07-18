@@ -46,6 +46,28 @@ def root(loaded_posts=None):
     return fk.render_template("home.html", date=current_date, loadedPosts=loaded_posts)
 
 
+@app.route('/home/search', methods=["POST"])
+def home_search():
+    query = stew_bot.clean(fk.request.form.get("home_search"))
+    time_filter = "all"
+    if fk.request.form.get("time-choose"):
+        time_filter = fk.request.form.get("time-choose")
+
+    search = stew_bot.home_search(query, time_filter)
+
+    if search is None:
+        e = stew_bot.clean(f"Either the query \"{query}\" was invalid or the "
+                           f" time \"{time_filter}\" was unrecognized.")
+        return page_not_found(e)
+
+    current_date = str(datetime.date.today())
+    # TODO: pagination...
+    search['results'] = search['results'][:10]
+    for r in search['results']:
+        r[4] = to_ymd(r[4])
+    return fk.render_template("home_search.html", search=search, date=current_date)
+
+
 # Renders sub_form and gets inputted values, clears cache
 @app.route('/subreddit_list', methods=["GET", "POST"])
 def get_subs():
@@ -115,7 +137,8 @@ def get_post(p_id):
     post_created = to_ymd(info['utc'])
     md_text = markdown(info['text'])
     post_article = Article(info['url']).display()
-    return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'], p_link=full_url,
+    return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'],
+                              p_link=full_url,
                               p_text=md_text, p_article=post_article)
 
 
@@ -153,7 +176,7 @@ def get_sub(sub_name):
 
 # Gets input form sub_search form to render results, 404 if invalid
 @app.route("/subreddit/<sub_name>/search", methods=["POST"])
-def search_sub(sub_name):
+def sub_search(sub_name):
     query = stew_bot.clean(fk.request.form.get("sub_search"))
     time_filter = "month"
     if fk.request.form.get("time-choose"):
@@ -165,7 +188,6 @@ def search_sub(sub_name):
                            f" time \"{time_filter}\" was unrecognized.")
         return page_not_found(e)
 
-    search['time'] = time_filter
     # TODO: pagination...
     search['results'] = search['results'][:10]
     for r in search['results']:
@@ -220,7 +242,6 @@ def page_not_found(e=""):
 
 @app.errorhandler(500)
 def internal_server_error(e=""):
-    # note that we set the 500 status explicitly
     return fk.render_template('500.html', error=e), 500
 
 

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Ladle Home Search {% endblock %}
+
+{% block body %}
+ <script>0</script> <!--https://stackoverflow.com/questions/21147149/flash-of-unstyled-content-fouc-in-firefox-only-is-ff-slow-renderer-->
+<div class="content-center">
+  <h1> Ladle Main Search </h1>
+  <p class="highlight-purple">{{ date }} </p>&nbsp;|
+  <p class="highlight-green"><span>Discover curated posts, browse specific subreddit groups, and more!</span></p>
+</div>
+<div class="subreddit-search-form">
+        <form action="/home/search" method="POST"  autocomplete="off">
+        <input type="text" name="home_search" class="subreddit-input-search medium-margin smaller-text" placeholder="Query..." required/>
+            <label for="time">Time: </label>
+      <select name="time-choose" id="time" class="time-selector">
+        <option value="hour">Hour</option>
+        <option value="day">Day</option>
+        <option value="week">Week</option>
+        <option value="month" >Month</option>
+        <option value="year">Year</option>
+        <option value="all" selected="selected">All</option>
+      </select>
+              <button type="submit" class="curated-button smaller-text">Search</button>
+        </form>
+    </div>
+<div class="spacer"></div>
+<div id="posts">
+  <h3 class="highlight-yellow" id="curated-header">Results for <b>"{{ search.q }}"</b> {% if search.time != "all" %} this {{ search.time }} {% endif %}</h3>
+  <ul class="small-left-pad no-vertical-margin">
+    {% for post in search.results %}
+    <li id="selected-post">
+      <a href="/post/{{ post[0] }}" class="post-link">
+        <p class="no-vertical-margin"><b>{{ post[5] }}</b> {{post[3]}} </p>
+      </a>
+      <div class="icon-container"> <div class="up-icon small-icon"></div> {{ post[1] }} [{{ post[6] }}%] | {{ post[2] }} comments
+           | Posted {{ post[4] }}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+    <!--Invalid route.-->
+    <div class="post-link additional-posts">
+      <a href="/home/more-posts">Additional Results </a>
+    </div>
+</div>
+<hr>
+<br>
+<div id="foot">
+  <p> See my GitHub for other projects: </p>
+  <a href="https://github.com/pqba" class="github-link" target="_blank">
+    <div class="github-icon large-icon"></div>
+  </a>
+</div>
+{% endblock %}

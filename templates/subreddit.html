@@ -11,7 +11,7 @@
     </div>
     <div class="subreddit-top">
         <div class="icon-container">
-          <h2>r/{{subreddit.name}}</h2>
+          <h2>r/{{ subreddit.name }}</h2>
             {% if subreddit.nsfw == true %}
              <div class="warn-icon large-icon margin-top-left"></div>
             {% endif %}
@@ -30,16 +30,16 @@
 
     </div>
     <div class="subreddit-info medium-margin">
-    <p class="highlight-purple">{{subreddit.subs}} subscribers</p>
+    <p class="highlight-purple">{{ subreddit.subs }} subscribers</p>
         {% if 'active' in extra and extra.active != 0  %}
-         |&nbsp;<p class="highlight-green">{{extra.active}} online</p>
+         |&nbsp;<p class="highlight-green">{{ extra.active }} online</p>
         {% endif %}
 
-    <p class="smaller-text">Created on {{subreddit_created}}</p>
+    <p class="smaller-text">Created on {{ subreddit_created }}</p>
     <img src="{{ subreddit_bg }}">
     <img src="{{ subreddit_icon }}">
         <hr>
-    <p><b>Description: </b>{{subreddit.desc}}</p>
+    <p><b>Description: </b>{{ subreddit.desc }}</p>
         <h2 class="highlight-blue"><b>About</b></h2>
         <div class="md-text">{{ subreddit.full_desc | safe }}</div>
     </div>

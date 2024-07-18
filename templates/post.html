@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Ladle Post |{{info.id}}| {% endblock %}
+{% block title %}Ladle Post |{{ info.id }}| {% endblock %}
 {% block body %}
 <div class="post-container">
     <a class="post-link" href="{{ p_link }}">
-        <h2>{{info.title}}
+        <h2>{{ info.title }}
         </h2>
         <div class="icon-container">
             {% if info.nsfw == true %}<div class="warn-icon large-icon tiny-margin"></div> {% endif %}
@@ -12,15 +12,15 @@
         </div>
     </a>
     {% if info.flair is not none %}
-    <div class="post-flair"><p class="highlight-pink smaller-text">{{info.flair}}</p></div>
+    <div class="post-flair"><p class="highlight-pink smaller-text">{{ info.flair }}</p></div>
     {% endif %}
     <div class="post-meta">
-        <h3><a class="post-link larger-text" href="/subreddit/{{info.sub}}">r/{{info.sub}}</a></h3>
+        <h3><a class="post-link larger-text" href="/subreddit/{{info.sub}}">r/{{ info.sub }}</a></h3>
         <div>
-            <p class="smaller-text highlight-blue"><a class="post-link" href="/user/{{ info.who }}">u/{{info.who}}</a>
+            <p class="smaller-text highlight-blue"><a class="post-link" href="/user/{{ info.who }}">u/{{ info.who }}</a>
             </p>
         </div>
-        <p class="smaller-text">On {{p_date}}</p>
+        <p class="smaller-text">On {{ p_date }}</p>
         <img class="user-pfp" src="{{ u_icon }}" alt="User PFP"/>
     </div>
     <div class="post-content">
@@ -28,7 +28,7 @@
         {{ p_article | safe }}
     </div>
     <div class="post-stats">
-        <div class="icon-container"> <div class="up-icon small-icon"></div> {{info.score}} [{{info.ratio}}%] | {{info.nc}}
+        <div class="icon-container"> <div class="up-icon small-icon"></div> {{ info.score }} [{{ info.ratio }}%] | {{ info.nc }}
             comments</div>
     </div>
     <div class="post-comments">
