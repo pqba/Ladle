@@ -58,21 +58,21 @@ Check out Reddit API Wiki for developer account setup: [API](https://www.reddit.
   - [flask_tests](https://flask.palletsprojects.com/en/3.0.x/testing/#identifying-tests)   
 - Profile application for speed improvements
   - time.time(), flask_profiler
-- Simple **search** on subreddit and home
-  - Time filter specifications, consistent UI
 - Comment tree rendering, load comments
 - Create simple rundown for running app
   - Add `praw.ini` without credentials
-- Explore options for adding audio to `v.reddit.com/{id}/video.mp4` links
 - Transition to HTTPS
   - [How to](https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https)
-- Host exemplary version
-  * Try [pythonanywhere](https://www.pythonanywhere.com/)
+
+**Host exemplary version**
+- Using [pythonanywhere](https://www.pythonanywhere.com/) or another free provider.
 
 **Version 2 Plans**
 - Refactor backend (possibly removing Praw) to use **[pullpush](https://pullpush.io/)**
   - Seems to be extremely quick and highly customizeable, as well as free
   - Look into ratelimits, etc. If good, refactor stew_bot to use pullpush.
+- Use ffmpeg WASM for video rendering
+  - [stackoverflow example](https://stackoverflow.com/questions/28890275/how-to-combine-video-and-audio-through-api-or-js)
 - Add the *ability* to save posts, or take notes on posts once logged in
   - Praw save feature or user's db
 - Add user login / logout features to store custom feed profiles?

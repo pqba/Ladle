@@ -332,6 +332,7 @@ def best_video_quality(mpd_url: str) -> str:
 # Returns list of the best quality image urls from submission.media_metadata
 def gallery_links(media_data: dict) -> list[str]:
     image_package = []
+    # Note: gives gallery images not necessarily in same order as displayed on Reddit
     for img in media_data.values():
         largest_img_url = img['s']['u']
         image_package.append(largest_img_url)
