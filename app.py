@@ -137,7 +137,8 @@ def get_post(p_id):
     post_created = to_ymd(info['utc'])
     md_text = markdown(info['text'])
     post_article = Article(info['url']).display()
-    return fk.render_template("post.html", info=info, u_icon=info['by-icon'], p_date=post_created, p_url=info['url'],
+    icon = stew_bot.get_profile_icon(info['by-icon'])
+    return fk.render_template("post.html", info=info, u_icon=icon, p_date=post_created, p_url=info['url'],
                               p_link=full_url,
                               p_text=md_text, p_article=post_article)
 
@@ -151,11 +152,12 @@ def get_user(name):
         e = stew_bot.clean(f"User doesn't exist or Ladle cannot find u/{name}.")
         return page_not_found(e)
     user_created = to_ymd(person['utc'])
+    icon = stew_bot.get_profile_icon(person['icon'])
     # For now only gather most recent 3 posts. 
     # TODO: implement pagination
     person["comments"] = person["comments"][:4]
     person["posts"] = person["posts"][:4]
-    return fk.render_template("user.html", person=person, person_icon=person['icon'], person_made=user_created)
+    return fk.render_template("user.html", person=person, person_icon=icon, person_made=user_created)
 
 
 # Renders subreddit,formats subs with commas, 404 if invalid name

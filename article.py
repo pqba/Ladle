@@ -63,8 +63,8 @@ class Article:
         return self._url
 
     def get_video_code(self, video_url: str, audio_url: str) -> str:
-        return ("<script>document.addEventListener('DOMContentLoaded', () => {" + f"const videoUrl = '{video_url}'; const audioUrl = '{audio_url}'"
-                + """ const videoElement = document.getElementById('video');
+        return "<script>document.addEventListener('DOMContentLoaded', () => {" + f"const videoUrl = '{video_url}'; const audioUrl = '{audio_url}'" + """
+      const videoElement = document.getElementById('video');
       if ('MediaSource' in window && MediaSource.isTypeSupported('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')) {
         const mediaSource = new MediaSource();
         videoElement.src = URL.createObjectURL(mediaSource);
@@ -79,7 +79,7 @@ class Article:
             .then(data => audioSourceBuffer.appendBuffer(data));
         });
       } else { console.error('MSE or required codecs are not supported in browser, or Ladle has encountered a parsing error.'); }
-    }); </script>""")
+    }); </script>"""
 
     def get_gallery_code(self, link_carousel: list[str]):
         images = "\n".join([f"<img src={img_link} {self.image_tags}/>" for img_link in link_carousel])

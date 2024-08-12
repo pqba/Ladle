@@ -5,6 +5,7 @@ import requests
 import requests.auth
 import configparser
 import json
+import base64
 
 
 # Returns praw bot from praw.ini file
@@ -337,6 +338,25 @@ def gallery_links(media_data: dict) -> list[str]:
         largest_img_url = img['s']['u']
         image_package.append(largest_img_url)
     return image_package
+
+
+def encode_image(image_url : str) -> str:
+    try:
+        resp = requests.get(image_url)
+        resp.raise_for_status()  # Ensure OK status
+        b64_encoded = base64.b64encode(resp.content).decode('utf-8')
+        return f'data:image/png;base64,{b64_encoded}'
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching image: {e}")
+        return image_url
+
+
+# Checks if profile url is redditstatic, and if so renders it into a blob
+def get_profile_icon(icon_url: str):
+    if 'redditstatic' in icon_url:
+        return encode_image(image_url=icon_url)
+    else:
+        return icon_url
 
 
 def get_comments():
